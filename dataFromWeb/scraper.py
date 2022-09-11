@@ -16,8 +16,8 @@ def getPastesInfo():
     pastesObjs =[]
     for element in soup.select('#list > .row:not(:first-child):not(:last-child)'):
         pasteObj = {}
-        pasteObj['copies'] = 1
-        pasteTitle = element.select('h4')[0].get_text().replace(u'\n',u' ').replace(u'\t',u'')
+        pasteObj['coppies'] = 1
+        pasteTitle = element.select('h4')[0].get_text().strip().replace(u'\n',u' ').replace(u'\t',u'')
         pasteObj['title'] = pasteTitle
         authorPaste = element.select('.col-sm-6')[0].get_text().strip().split()
         authorName =''
@@ -26,7 +26,7 @@ def getPastesInfo():
             pasteObj['author'] = authorName
         else:
             for cell in range(2,2+(len(authorPaste)-9)+1):
-                authorName = authorName + ' '  + authorPaste[cell]
+                authorName = authorName + ' ' + authorPaste[cell]
             pasteObj['author'] = authorName
         datePaste = element.select('.col-sm-6')[0].get_text().strip().split('at')[-1]
         pasteObj['date']=datePaste
@@ -42,7 +42,7 @@ def getPastesInfo():
         if isalocalCopy == 'original' and isaDbCopy == 'original':
             pastesObjs.append(pasteObj)
         elif type(isalocalCopy) is dict:
-            isalocalCopy['copies'] = isalocalCopy['copies'] + 1
+            isalocalCopy['coppies'] = isalocalCopy['coppies'] + 1
         elif type(isaDbCopy) is dict:
-            isaDbCopy['copies'] = isaDbCopy['copies'] + 1
+            isaDbCopy['coppies'] = isaDbCopy['coppies'] + 1
     return pastesObjs
