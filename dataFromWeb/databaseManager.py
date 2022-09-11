@@ -31,5 +31,5 @@ class databaseManager:
                 if paste['date'] == outsidePaste['date']:
                     result = 'same'
                     break
-                result = 'copy'
+                result = paste
         return result
