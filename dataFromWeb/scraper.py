@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from connections import db
 
 with open('../tor.html', 'r') as f:
     tor_string = f.read()
@@ -35,5 +36,6 @@ def getPastesInfo():
             if len(contentRow) > 0 :
                 pasteContent.append(contentRow)
         pasteObj['content'] = '\n'.join(pasteContent)
-        pastesObjs.append(pasteObj)
+        if db.isaCopy({**pasteObj,"content": pasteObj['content']},pastesObjs) == 'original' and db.isaCopy({**pasteObj,"content": pasteObj['content']}) == 'original':
+            pastesObjs.append(pasteObj)
     return pastesObjs
