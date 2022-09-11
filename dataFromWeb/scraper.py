@@ -1,14 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 
-session = requests.session()
-session.proxies["http"] = "socks5h://localhost:9050"
-session.proxies["https"] = "socks5h://localhost:9050"
+with open('../tor.html', 'r') as f:
+    tor_string = f.read()
+# session = requests.session()
+# session.proxies["http"] = "socks5h://localhost:9050"
+# session.proxies["https"] = "socks5h://localhost:9050"
 #http://strongerw2ise74v3duebgsvug4mehyhlpa7f6kfwnas7zofs3kov7yd.onion/all
-url = "http://strongerw2ise74v3duebgsvug4mehyhlpa7f6kfwnas7zofs3kov7yd.onion/all"
-response = session.get(url)
+# url = "http://strongerw2ise74v3duebgsvug4mehyhlpa7f6kfwnas7zofs3kov7yd.onion/all"
+# response = session.get(url)
+soup = BeautifulSoup(tor_string, "html.parser")
 
-soup = BeautifulSoup(response, "html.parser")
 def getPastesInfo():
     pastesObjs =[]
     for element in soup.select('#list > .row:not(:first-child):not(:last-child)'):

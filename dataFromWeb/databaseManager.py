@@ -18,3 +18,18 @@ class databaseManager:
     # get all the pastes that inside the db
     def getAllPastes(self):
         return self.collection.find({})
+
+    # check if a content is a copy
+    def isaCopy(self,outsidePaste,outsidePastes=False):
+        result = 'original'
+        if outsidePastes == False:
+            allPastes = self.getAllPastes()
+        else:
+            allPastes = outsidePastes
+        for paste in allPastes:
+            if paste['content'] == outsidePaste['content']:
+                if paste['date'] == outsidePaste['date']:
+                    result = 'same'
+                    break
+                result = 'copy'
+        return result
