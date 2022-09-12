@@ -1,9 +1,9 @@
 from time import sleep
-from scraper import getPastesInfo
+from scraper import getPastesData
 from connections import db
 
 isRunning = True
 
 while isRunning:
-    print(db.insertPastes(getPastesInfo()))
+    print(db.insertPastes(getPastesData()))
     sleep(120)

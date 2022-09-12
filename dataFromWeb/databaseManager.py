@@ -1,3 +1,4 @@
+import datetime
 from pymongo import MongoClient
 
 class databaseManager:
@@ -28,7 +29,7 @@ class databaseManager:
             allPastes = outsidePastes
         for paste in allPastes:
             if paste['content'] == outsidePaste['content']:
-                if paste['date'] == outsidePaste['date']:
+                if outsidePaste['date'] - datetime.timedelta(minutes=1) < paste['date'] < outsidePaste['date'] + datetime.timedelta(minutes=1):
                     result = 'same'
                     break
                 result = paste
