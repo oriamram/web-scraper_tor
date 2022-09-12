@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Paste from "./components/pastes/Paste";
-
+import { io } from "socket.io-client";
+import axios from "axios";
 const paste = {
 	title: "Darknet Trusted Links",
 	author: "Anonymous",
@@ -10,9 +11,29 @@ const paste = {
 };
 
 const App = () => {
+	const [display, setDisplay] = useState("");
+
+	// useEffect(() => {
+	// 	const socket = io("http://localhost:4545");
+	// 	socket.on("connect", () => {
+	// 		console.log("connected");
+	// 		socket.on("fromServer", (data) => {
+	// 			console.log(data);
+	// 		});
+	// 	});
+	// }, []);
+
 	return (
 		<div>
-			<Paste title={paste.title} author={paste.author} date={new Date(paste.date)} content={paste.content} coppies={paste.coppies} />
+			<h1>{display}</h1>
+			<button
+				onClick={() => {
+					setDisplay(display + "bsa");
+				}}
+			>
+				aaa
+			</button>
+			{/* <Paste title={paste.title} author={paste.author} date={new Date(paste.date)} content={paste.content} coppies={paste.coppies} /> */}
 		</div>
 	);
 };
