@@ -20,6 +20,7 @@ class databaseManager:
     def getAllPastes(self):
         return self.collection.find({})
 
+
     # check if a content is a copy
     def isaCopy(self,outsidePaste,outsidePastes=False):
         result = 'original'

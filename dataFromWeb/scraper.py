@@ -61,7 +61,7 @@ def getPastesData():
     pastesArr=[]
     for pasteElement in soup.select('tr.odd,tr.even'):
         pasteObj={}
-        pasteObj['coppies'] = 1
+        # pasteObj['coppies'] = 1
         # title
         pasteObj['title'] = pasteElement.select_one('td:first-child > a').get_text()
         # author
@@ -94,10 +94,13 @@ def getPastesData():
         # appending
         if isalocalCopy == 'original' and isaDbCopy == 'original':
             pastesArr.append(pasteObj)
-        elif type(isalocalCopy) is dict:
-            isalocalCopy['coppies'] = isalocalCopy['coppies'] + 1
-        elif type(isaDbCopy) is dict:
-            isaDbCopy['coppies'] = isaDbCopy['coppies'] + 1
+        # elif type(isalocalCopy) is dict:
+        #     if isalocalCopy['author'] != pasteObj['author']:
+        #         isalocalCopy['coppies'] = isalocalCopy['coppies'] + 1
+
+        # elif type(isaDbCopy) is dict:
+        #     if isaDbCopy['author'] != pasteObj['author']:
+        #         isaDbCopy['coppies'] = isaDbCopy['coppies'] + 1
     return pastesArr
         
 # str analyze

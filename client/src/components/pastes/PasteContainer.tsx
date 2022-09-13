@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import "../../styles/pasteContainer.scss";
+
 import Paste from "./Paste";
 import { allPostsContext } from "../../App";
 

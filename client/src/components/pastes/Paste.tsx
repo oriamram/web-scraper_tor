@@ -14,8 +14,6 @@ interface pasteData {
 // type paste = pasteData;
 
 const Paste: React.FC<pasteData> = ({ pasteData }) => {
-	console.log(pasteData);
-
 	return <div></div>;
 };
 export default Paste;
