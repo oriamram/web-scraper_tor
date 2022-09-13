@@ -13,20 +13,23 @@ const db = new databaseManager();
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(json());
 
-io.on("connection", (socket) => {
-	console.log(socket.id);
+io.on("connection", async (socket) => {
+	console.log(socket.id, "is now connected");
+	io.emit("newPastesToLoad", await db.getAllPastes());
 	socket.on("custom", (number) => {
 		console.log(number);
 	});
-	io.emit("fromServer", 100);
+	socket.on("disconnect", () => {
+		console.log(socket.id, "disconnected");
+	});
 });
 
 app.get("/", async (req, res) => {
-	res.send(await db.getAllPastes());
+	res.send();
 });
 
 app.get("/bring_new_pastes", async (req, res) => {
-	console.log("now finding");
+	io.emit("newPastesToLoad", await db.getAllPastes());
 	res.send("okok");
 });
 

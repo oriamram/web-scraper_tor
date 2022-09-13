@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Paste from "./components/pastes/Paste";
 import { io } from "socket.io-client";
 import axios from "axios";
+import PasteContainer from "./components/pastes/PasteContainer";
+
 const paste = {
 	title: "Darknet Trusted Links",
 	author: "Anonymous",
@@ -10,30 +11,37 @@ const paste = {
 	coppies: 5,
 };
 
-const App = () => {
-	const [display, setDisplay] = useState("");
+export const allPostsContext = React.createContext<Array<paste> | null>(null);
 
-	// useEffect(() => {
-	// 	const socket = io("http://localhost:4545");
-	// 	socket.on("connect", () => {
-	// 		console.log("connected");
-	// 		socket.on("fromServer", (data) => {
-	// 			console.log(data);
-	// 		});
-	// 	});
-	// }, []);
+interface paste {
+	title: String;
+	coppies: Number;
+	author: String;
+	content: String;
+	date: Date;
+	tags: Array<String>;
+	polarity: Number;
+}
+
+const App: React.FC = () => {
+	const [allPastes, setAllPastes] = useState<Array<paste> | null>(null);
+
+	useEffect(() => {
+		const socket = io("http://localhost:4545");
+		socket.on("connect", () => {
+			console.log("connected");
+			socket.on("newPastesToLoad", (pastes: Array<paste>) => {
+				setAllPastes(pastes);
+			});
+		});
+	}, []);
 
 	return (
 		<div>
-			<h1>{display}</h1>
-			<button
-				onClick={() => {
-					setDisplay(display + "bsa");
-				}}
-			>
-				aaa
-			</button>
-			{/* <Paste title={paste.title} author={paste.author} date={new Date(paste.date)} content={paste.content} coppies={paste.coppies} /> */}
+			<allPostsContext.Provider value={allPastes}>
+				<PasteContainer />
+				{/* <Paste title={paste.title} author={paste.author} date={new Date(paste.date)} content={paste.content} coppies={paste.coppies} /> */}
+			</allPostsContext.Provider>
 		</div>
 	);
 };

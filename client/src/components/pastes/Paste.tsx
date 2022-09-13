@@ -1,26 +1,21 @@
 import React from "react";
 
 interface pasteData {
-	title: String;
-	content: String;
-	coppies: Number;
-	date: Date;
-	author: String;
+	pasteData: {
+		title: String;
+		coppies: Number;
+		author: String;
+		content: String;
+		date: Date;
+		tags: Array<String>;
+		polarity: Number;
+	};
 }
+// type paste = pasteData;
 
-const Paste: React.FC<pasteData> = ({ title, content, coppies, date, author }) => {
-	console.log(date);
+const Paste: React.FC<pasteData> = ({ pasteData }) => {
+	console.log(pasteData);
 
-	return (
-		<div>
-			<>
-				{title}
-				{content}
-				{coppies}
-				{/* {date} */}
-				{author}
-			</>
-		</div>
-	);
+	return <div></div>;
 };
 export default Paste;

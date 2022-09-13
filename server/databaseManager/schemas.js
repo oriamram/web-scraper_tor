@@ -5,6 +5,9 @@ const pasteSchema = new Schema({
 	coppies: Number,
 	author: String,
 	content: String,
+	date: Date,
+	tags: Array,
+	polarity: Number,
 });
 
 module.exports = { pasteSchema };

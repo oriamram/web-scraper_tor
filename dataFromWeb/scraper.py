@@ -1,26 +1,27 @@
+from array import array
 import json
 import requests
 import datetime
 from bs4 import BeautifulSoup
 from textblob import TextBlob
-
 from connections import db
 
-# with open('../tor.html', 'r') as f:
-#     tor_string = f.read()
+with open('../tor.html', 'r') as f:
+    tor_string = f.read()
 session = requests.session()
 
 tagsFile = open('tags.json','r')
 tagsData = json.load(tagsFile)
-print(tagsData)
 
 session.proxies["http"] = "socks5h://localhost:9050"
 session.proxies["https"] = "socks5h://localhost:9050"
 #http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists
 
 url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
-# response = session.get(url)
-# soup = BeautifulSoup(response.content, "html.parser")
+response = session.get(url)
+soup = BeautifulSoup(response.content, "html.parser")
+# soup = BeautifulSoup(tor_string, "html.parser")
+
 # def getPastesInfo():
     # pastesObjs =[]
     # for element in soup.select('#list > .row:not(:first-child):not(:last-child)'):
@@ -87,8 +88,10 @@ def getPastesData():
         pasteObj['content'] = ' '.join(response.text.split())
         isalocalCopy = db.isaCopy(pasteObj,pastesArr)
         isaDbCopy = db.isaCopy(pasteObj)
-        # (sentiment analyzer)
+        # sentiment analyzer
         pasteObj['polarity'] = analyzeSentiment(pasteObj['content'])
+        pasteObj['tags'] = checkForTag(pasteObj['title'],pasteObj['content'])
+        # appending
         if isalocalCopy == 'original' and isaDbCopy == 'original':
             pastesArr.append(pasteObj)
         elif type(isalocalCopy) is dict:
@@ -101,3 +104,15 @@ def getPastesData():
 def analyzeSentiment(str):
     blob = TextBlob(str)
     return blob.polarity
+
+def checkForTag(title,content):
+    tags = set()
+    for tag in tagsData:
+        for ref in tagsData[tag]:
+            if ref in title.lower():
+                tags.add(tag)
+            if ref in content.lower():
+                tags.add(tag)
+    return [*tags]
+
+# print(checkForTag('CP','PORN'))
