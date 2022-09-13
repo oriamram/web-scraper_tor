@@ -1,0 +1,6 @@
+@import "./main.scss";
+.Paste {
+    @include size(90%, 20%);
+    margin-top: 15px;
+    background: linear-gradient(1deg, black, white);
+}

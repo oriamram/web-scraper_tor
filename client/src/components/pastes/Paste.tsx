@@ -1,5 +1,5 @@
 import React from "react";
-
+import "../../styles/paste.scss";
 interface pasteData {
 	pasteData: {
 		title: String;
@@ -14,6 +14,6 @@ interface pasteData {
 // type paste = pasteData;
 
 const Paste: React.FC<pasteData> = ({ pasteData }) => {
-	return <div></div>;
+	return <div className="Paste"></div>;
 };
 export default Paste;
