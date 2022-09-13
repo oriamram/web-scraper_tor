@@ -25,4 +25,9 @@ app.get("/", async (req, res) => {
 	res.send(await db.getAllPastes());
 });
 
+app.get("/bring_new_pastes", async (req, res) => {
+	console.log("now finding");
+	res.send("okok");
+});
+
 app.listen(PORT, () => console.log(`listen on ${PORT}`));

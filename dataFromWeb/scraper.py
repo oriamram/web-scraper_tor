@@ -1,18 +1,26 @@
+import json
 import requests
 import datetime
 from bs4 import BeautifulSoup
+from textblob import TextBlob
+
 from connections import db
 
-with open('../tor.html', 'r') as f:
-    tor_string = f.read()
+# with open('../tor.html', 'r') as f:
+#     tor_string = f.read()
 session = requests.session()
+
+tagsFile = open('tags.json','r')
+tagsData = json.load(tagsFile)
+print(tagsData)
+
 session.proxies["http"] = "socks5h://localhost:9050"
 session.proxies["https"] = "socks5h://localhost:9050"
 #http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists
 
 url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
-response = session.get(url)
-soup = BeautifulSoup(response.content, "html.parser")
+# response = session.get(url)
+# soup = BeautifulSoup(response.content, "html.parser")
 # def getPastesInfo():
     # pastesObjs =[]
     # for element in soup.select('#list > .row:not(:first-child):not(:last-child)'):
@@ -71,7 +79,7 @@ def getPastesData():
         elif dateInfo[1].lower()  == 'weeks' or dateInfo[1].lower()  == 'week':
             tdelta = datetime.timedelta(weeks=int(dateInfo[0]))    
         pasteObj['date'] = today - tdelta
-        # content
+        # content 
         url = pasteElement.select_one('td:first-child > a').get_attribute_list('href')[0].split('view')
         url[1] = '/raw' + url[1]
         url = 'view'.join(url)
@@ -79,6 +87,8 @@ def getPastesData():
         pasteObj['content'] = ' '.join(response.text.split())
         isalocalCopy = db.isaCopy(pasteObj,pastesArr)
         isaDbCopy = db.isaCopy(pasteObj)
+        # (sentiment analyzer)
+        pasteObj['polarity'] = analyzeSentiment(pasteObj['content'])
         if isalocalCopy == 'original' and isaDbCopy == 'original':
             pastesArr.append(pasteObj)
         elif type(isalocalCopy) is dict:
@@ -87,5 +97,7 @@ def getPastesData():
             isaDbCopy['coppies'] = isaDbCopy['coppies'] + 1
     return pastesArr
         
-
-    
+# str analyze
+def analyzeSentiment(str):
+    blob = TextBlob(str)
+    return blob.polarity
