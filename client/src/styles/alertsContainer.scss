@@ -2,7 +2,30 @@
 
 .AlertsContainer {
     @include size(100%, 90%);
+    background: $blue;
     margin-top: 2vh;
-    background: green;
     grid-area: alerts;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    overflow-x: hidden;
+    .allAlertsPastes {
+        @include size(90%, 100%);
+    }
+    .allAlertsList {
+        @include size(100%, unset);
+        text-align: center;
+        .alertTag {
+            background: $lightPurple;
+            padding: 0% 3% 0% 3%;
+            display: inline-block;
+            margin-left: 1%;
+            overflow: auto;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
 }

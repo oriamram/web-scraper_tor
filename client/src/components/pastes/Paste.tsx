@@ -24,12 +24,11 @@ const Paste: React.FC<pasteProps> = ({ pasteData }) => {
 	return (
 		<div className="Paste">
 			<h1>{pasteData.title}</h1>
-			<p>Author: {pasteData.author}</p>
+			<p>{pasteData.author}</p>
 			<div className="info">
 				<p>{pasteData.date.toString().slice(0, 10)} |&nbsp;</p>
 				{analizePolarity(pasteData.polarity)}
 				<p>
-					{" "}
 					&nbsp;|&nbsp; <span className="material-symbols-outlined">label</span>&nbsp;
 					{pasteData.tags.map((tag) => tag + ", ")}
 				</p>

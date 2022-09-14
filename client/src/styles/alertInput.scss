@@ -1,0 +1,10 @@
+@import "./main.scss";
+form {
+    @include size(100%, 7%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    #alertInput {
+        @include size(90%, 40%);
+    }
+}

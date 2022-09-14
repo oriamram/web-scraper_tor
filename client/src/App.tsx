@@ -3,6 +3,8 @@ import { io } from "socket.io-client";
 import QuantityData from "./components/charts/QuantityData";
 import PasteContainer from "./components/pastes/PasteContainer";
 import "./styles/app.scss";
+import "./styles/loader.scss";
+
 import AlertsContainer from "./components/alerts/AlertsContainer";
 
 export const allPostsContext = React.createContext<Array<paste> | null>(null);
@@ -18,6 +20,7 @@ export interface paste {
 
 const App: React.FC = () => {
 	const [allPastes, setAllPastes] = useState<Array<paste> | null>(null);
+	const [connected, setConnected] = useState<boolean>(false);
 
 	useEffect(() => {
 		const socket = io("http://localhost:4545");
@@ -25,19 +28,36 @@ const App: React.FC = () => {
 			console.log("connected");
 			socket.on("newPastesToLoad", (pastes: Array<paste>) => {
 				setAllPastes(pastes);
+				setConnected(true);
 			});
 		});
 	}, []);
 
-	return (
-		<div className="App">
-			<allPostsContext.Provider value={allPastes}>
-				<AlertsContainer />
-				<PasteContainer />
-				<QuantityData />
-			</allPostsContext.Provider>
-		</div>
-	);
+	const waitingForConnection = () => {
+		if (connected) {
+			return (
+				<>
+					<allPostsContext.Provider value={allPastes}>
+						<AlertsContainer />
+						<PasteContainer />
+						<QuantityData />
+					</allPostsContext.Provider>
+				</>
+			);
+		} else
+			return (
+				<>
+					<div className="lds-ring">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</>
+			);
+	};
+
+	return <div className="App">{waitingForConnection()}</div>;
 };
 
 export default App;
