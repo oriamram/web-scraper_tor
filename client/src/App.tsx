@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import axios from "axios";
+import QuantityData from "./components/charts/QuantityData";
 import PasteContainer from "./components/pastes/PasteContainer";
 import "./styles/App.scss";
 
@@ -32,6 +32,7 @@ const App: React.FC = () => {
 		<div className="App">
 			<allPostsContext.Provider value={allPastes}>
 				<PasteContainer />
+				<QuantityData />
 			</allPostsContext.Provider>
 		</div>
 	);

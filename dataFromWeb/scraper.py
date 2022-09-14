@@ -94,13 +94,6 @@ def getPastesData():
         # appending
         if isalocalCopy == 'original' and isaDbCopy == 'original':
             pastesArr.append(pasteObj)
-        # elif type(isalocalCopy) is dict:
-        #     if isalocalCopy['author'] != pasteObj['author']:
-        #         isalocalCopy['coppies'] = isalocalCopy['coppies'] + 1
-
-        # elif type(isaDbCopy) is dict:
-        #     if isaDbCopy['author'] != pasteObj['author']:
-        #         isaDbCopy['coppies'] = isaDbCopy['coppies'] + 1
     return pastesArr
         
 # str analyze

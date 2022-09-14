@@ -25,7 +25,11 @@ io.on("connection", async (socket) => {
 });
 
 app.get("/", async (req, res) => {
-	res.send();
+	res.sendStatus(200);
+});
+
+app.get("/get_tags", async (req, res) => {
+	res.send(await db.getAllTagsCount());
 });
 
 app.get("/bring_new_pastes", async (req, res) => {

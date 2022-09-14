@@ -9,8 +9,11 @@ export const PasteContainer: React.FC = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const generatePastes = () => {
-		return allPastes?.filter((paste) => paste.title.toLowerCase().includes(searchTerm.toLowerCase())).map((paste) => <Paste pasteData={paste} />);
+		return allPastes
+			?.filter((paste) => paste.title.toLowerCase().includes(searchTerm.toLowerCase()))
+			.map((paste) => <Paste key={paste._id} pasteData={paste} />);
 	};
+
 	return (
 		<div className="PasteContainer">
 			<Search setSearchTerm={(val) => setSearchTerm(val)} searchTerm={searchTerm} />
@@ -18,4 +21,5 @@ export const PasteContainer: React.FC = () => {
 		</div>
 	);
 };
+
 export default PasteContainer;
