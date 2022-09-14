@@ -1,0 +1,8 @@
+@import "./main.scss";
+
+.AlertsContainer {
+    @include size(100%, 90%);
+    margin-top: 2vh;
+    background: green;
+    grid-area: alerts;
+}

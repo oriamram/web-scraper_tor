@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import QuantityData from "./components/charts/QuantityData";
 import PasteContainer from "./components/pastes/PasteContainer";
-import "./styles/App.scss";
+import "./styles/app.scss";
+import AlertsContainer from "./components/alerts/AlertsContainer";
 
 export const allPostsContext = React.createContext<Array<paste> | null>(null);
-interface paste {
+export interface paste {
 	_id: string;
 	title: string;
 	author: string;
@@ -31,6 +32,7 @@ const App: React.FC = () => {
 	return (
 		<div className="App">
 			<allPostsContext.Provider value={allPastes}>
+				<AlertsContainer />
 				<PasteContainer />
 				<QuantityData />
 			</allPostsContext.Provider>
