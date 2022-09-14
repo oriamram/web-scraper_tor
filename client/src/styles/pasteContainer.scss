@@ -1,7 +1,7 @@
 @import "./main.scss";
 
 .PasteContainer {
-    @include size(100%, 70%);
+    @include size(100%, 80%);
     grid-area: pastes;
     align-self: flex-end;
     display: flex;

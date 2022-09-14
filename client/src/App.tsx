@@ -6,13 +6,13 @@ import "./styles/App.scss";
 
 export const allPostsContext = React.createContext<Array<paste> | null>(null);
 interface paste {
-	title: String;
-	coppies: Number;
-	author: String;
-	content: String;
+	_id: string;
+	title: string;
+	author: string;
+	content: string;
 	date: Date;
 	tags: Array<String>;
-	polarity: Number;
+	polarity: number;
 }
 
 const App: React.FC = () => {
@@ -32,7 +32,6 @@ const App: React.FC = () => {
 		<div className="App">
 			<allPostsContext.Provider value={allPastes}>
 				<PasteContainer />
-				{/* <Paste title={paste.title} author={paste.author} date={new Date(paste.date)} content={paste.content} coppies={paste.coppies} /> */}
 			</allPostsContext.Provider>
 		</div>
 	);

@@ -5,5 +5,5 @@
 	"drugs": ["drugs", "deepmagic", "hashish", "weed"],
 	"hacking": ["spyware", "hacker", "hacking", "hack", "spywares"],
 	"crypto": ["bitcoin", "crypto"],
-	"market": ["market", "black market", "alliance"]
+	"market": ["market", "black market", "alliance", "buy"]
 }

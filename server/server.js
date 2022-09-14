@@ -30,7 +30,7 @@ app.get("/", async (req, res) => {
 
 app.get("/bring_new_pastes", async (req, res) => {
 	io.emit("newPastesToLoad", await db.getAllPastes());
-	res.send("okok");
+	res.sendStatus(204);
 });
 
 app.listen(PORT, () => console.log(`listen on ${PORT}`));
