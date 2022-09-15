@@ -1,9 +1,9 @@
 import React, { FormEvent, useContext, useEffect, useState } from "react";
-import "../../styles/alerts/alertsContainer.scss";
-import "../../styles/alerts/alertInput.scss";
 import { allPostsContext } from "../../App";
 import Alert from "./Alert";
 import { paste } from "../../interfaces/interfacePaste";
+import "../../styles/alerts/alertsContainer.scss";
+import "../../styles/alerts/alertInput.scss";
 
 const AlertsContainer: React.FC = () => {
 	const allPastes = useContext(allPostsContext);
@@ -13,6 +13,7 @@ const AlertsContainer: React.FC = () => {
 	);
 	const [allAlertsPastes, setAllAlertsPastes] = useState<Array<paste>>([]);
 
+	//search for term and set localstorage
 	const onFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (alertInput.length > 0 && !allAlertTags.includes(alertInput)) {
@@ -29,14 +30,15 @@ const AlertsContainer: React.FC = () => {
 		}
 	};
 
+	//find all the pastes that includes the tag and set state
 	const getPastesFromAlertTags = () => {
 		let allAlertsPastes = [];
 		if (allPastes) {
 			allAlertsPastes = allPastes.filter((paste) =>
 				allAlertTags.some(
 					(alert) =>
-						paste.content.includes(alert) ||
-						paste.title.includes(alert) ||
+						paste.content.toLowerCase().includes(alert) ||
+						paste.title.toLowerCase().includes(alert) ||
 						paste.tags.includes(alert)
 				)
 			);
@@ -48,6 +50,7 @@ const AlertsContainer: React.FC = () => {
 		getPastesFromAlertTags();
 	}, [allAlertTags, allPastes]);
 
+	//remove tag by click on it
 	const removeTag = (element: React.MouseEvent<HTMLElement>) => {
 		for (let i = 0; i < allAlertTags.length; i++) {
 			if (allAlertTags[i] === element.currentTarget.id) {
@@ -63,6 +66,7 @@ const AlertsContainer: React.FC = () => {
 		}
 	};
 
+	//creates a tag
 	const createAlertTags = () => {
 		return allAlertTags.map((tag) => (
 			<div

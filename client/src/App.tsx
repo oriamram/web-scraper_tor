@@ -13,11 +13,10 @@ import "./styles/loader.scss";
 //context for all of the pastes
 export const allPostsContext = React.createContext<Array<paste> | null>(null);
 
-let quantityChartData: chart;
-
 const App: React.FC = () => {
 	const [allPastes, setAllPastes] = useState<Array<paste> | null>(null);
 	const [connected, setConnected] = useState<boolean>(false);
+	const [quantityChartData, setQuantityChartData] = useState<chart>();
 
 	//connecting to the Wss
 	useEffect(() => {
@@ -28,37 +27,38 @@ const App: React.FC = () => {
 				setAllPastes(pastes);
 				setConnected(true);
 			});
-		});
-
-		const createData = async () => {
-			const tags = (await axios.get("/get_tags")).data;
-			quantityChartData = {
-				labels: tags.map((tagObj: tag) => tagObj["tag"]),
-				datasets: [
-					{
-						label: "Quantity Stats",
-						data: tags.map((tagObj: tag) => tagObj["sum"]),
-						backgroundColor: [
-							"gray",
-							"rgb(182,133,163)",
-							"rgb(240,92,90)",
-							"blue",
-							"green",
-							"rgb(253,199,47)",
-							"rgb(66,158,183)",
-						],
-						borderColor: "black",
-						borderWidth: 2,
-					},
-				],
+			const createData = async () => {
+				const tags = (await axios.get("/get_tags")).data;
+				setQuantityChartData({
+					labels: tags.map((tagObj: tag) => tagObj["tag"]),
+					datasets: [
+						{
+							label: "Quantity Stats",
+							data: tags.map((tagObj: tag) => tagObj["sum"]),
+							backgroundColor: [
+								"gray",
+								"rgb(182,133,163)",
+								"rgb(240,92,90)",
+								"blue",
+								"green",
+								"rgb(253,199,47)",
+								"rgb(66,158,183)",
+							],
+							borderColor: "black",
+							borderWidth: 2,
+						},
+					],
+				});
 			};
-		};
-		createData();
+			createData();
+		});
 	}, []);
 
 	//return components or loader depending on the connection status (to wss)
 	const waitingForConnection = () => {
 		if (connected) {
+			console.log(quantityChartData);
+
 			return (
 				<allPostsContext.Provider value={allPastes}>
 					<AlertsContainer />
