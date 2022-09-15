@@ -1,5 +1,4 @@
-@import "./main.scss";
-
+@import "../main.scss";
 .AlertsContainer {
     @include size(100%, 90%);
     background: $blue;

@@ -9,16 +9,16 @@ const io = require("socket.io")(4545, {
 });
 const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
+
+
 const db = new databaseManager();
+
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(json());
 
 io.on("connection", async (socket) => {
 	console.log(socket.id, "is now connected");
 	io.emit("newPastesToLoad", await db.getAllPastes());
-	socket.on("custom", (number) => {
-		console.log(number);
-	});
 	socket.on("disconnect", () => {
 		console.log(socket.id, "disconnected");
 	});

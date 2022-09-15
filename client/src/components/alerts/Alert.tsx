@@ -1,8 +1,8 @@
 import React from "react";
-import { paste } from "../../App";
-import "../../styles/alert.scss";
+import { paste } from "../../interfaces/interfacePaste";
+import "../../styles/alerts/alert.scss";
 
-const Alert: React.FC<{ alertPaste: paste }> = ({ alertPaste }) => {
+const Alert: React.FC<{ alertProps: paste }> = ({ alertProps: alertPaste }) => {
 	return (
 		<div className="Alert">
 			<h1>{alertPaste.title}</h1>

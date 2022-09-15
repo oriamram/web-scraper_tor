@@ -1,13 +1,16 @@
 import React, { FormEvent, useContext, useEffect, useState } from "react";
-import "../../styles/alertsContainer.scss";
-import "../../styles/alertInput.scss";
-import { allPostsContext, paste } from "../../App";
+import "../../styles/alerts/alertsContainer.scss";
+import "../../styles/alerts/alertInput.scss";
+import { allPostsContext } from "../../App";
 import Alert from "./Alert";
+import { paste } from "../../interfaces/interfacePaste";
 
 const AlertsContainer: React.FC = () => {
 	const allPastes = useContext(allPostsContext);
 	const [alertInput, setAlertInput] = useState<string>("");
-	const [allAlertTags, setAllAlertsTags] = useState<Array<string>>(JSON.parse(localStorage.getItem("Scraper-Alerts-Tags")!) || []);
+	const [allAlertTags, setAllAlertsTags] = useState<Array<string>>(
+		JSON.parse(localStorage.getItem("Scraper-Alerts-Tags")!) || []
+	);
 	const [allAlertsPastes, setAllAlertsPastes] = useState<Array<paste>>([]);
 
 	const onFormSubmit = (e: FormEvent) => {
@@ -17,7 +20,10 @@ const AlertsContainer: React.FC = () => {
 			newAllAlertsTags.push(alertInput);
 			setAlertInput("");
 			setAllAlertsTags(newAllAlertsTags);
-			localStorage.setItem("Scraper-Alerts-Tags", JSON.stringify(newAllAlertsTags));
+			localStorage.setItem(
+				"Scraper-Alerts-Tags",
+				JSON.stringify(newAllAlertsTags)
+			);
 		} else {
 			alert("Not a valid insert");
 		}
@@ -27,7 +33,12 @@ const AlertsContainer: React.FC = () => {
 		let allAlertsPastes = [];
 		if (allPastes) {
 			allAlertsPastes = allPastes.filter((paste) =>
-				allAlertTags.some((alert) => paste.content.includes(alert) || paste.title.includes(alert) || paste.tags.includes(alert))
+				allAlertTags.some(
+					(alert) =>
+						paste.content.includes(alert) ||
+						paste.title.includes(alert) ||
+						paste.tags.includes(alert)
+				)
 			);
 			setAllAlertsPastes(allAlertsPastes);
 		}
@@ -35,7 +46,7 @@ const AlertsContainer: React.FC = () => {
 
 	useEffect(() => {
 		getPastesFromAlertTags();
-	}, [allAlertTags]);
+	}, [allAlertTags, allPastes]);
 
 	const removeTag = (element: React.MouseEvent<HTMLElement>) => {
 		for (let i = 0; i < allAlertTags.length; i++) {
@@ -43,7 +54,10 @@ const AlertsContainer: React.FC = () => {
 				let newAllAlertTags = [...allAlertTags];
 				newAllAlertTags.splice(i, 1);
 				setAllAlertsTags(newAllAlertTags);
-				localStorage.setItem("Scraper-Alerts-Tags", JSON.stringify(newAllAlertTags));
+				localStorage.setItem(
+					"Scraper-Alerts-Tags",
+					JSON.stringify(newAllAlertTags)
+				);
 				break;
 			}
 		}
@@ -51,7 +65,12 @@ const AlertsContainer: React.FC = () => {
 
 	const createAlertTags = () => {
 		return allAlertTags.map((tag) => (
-			<div className="alertTag" id={tag} key={tag} onClick={(e) => removeTag(e)}>
+			<div
+				className="alertTag"
+				id={tag}
+				key={tag}
+				onClick={(e) => removeTag(e)}
+			>
 				{tag}
 			</div>
 		));
@@ -60,12 +79,18 @@ const AlertsContainer: React.FC = () => {
 	return (
 		<div className="AlertsContainer">
 			<form onSubmit={(e) => onFormSubmit(e)}>
-				<input id="alertInput" type="text" placeholder="Create Alert" value={alertInput} onChange={(e) => setAlertInput(e.target.value)} />
+				<input
+					id="alertInput"
+					type="text"
+					placeholder="Create Alert"
+					value={alertInput}
+					onChange={(e) => setAlertInput(e.target.value)}
+				/>
 			</form>
 			<div className="allAlertsList">{createAlertTags()}</div>
 			<div className="allAlertsPastes">
-				{allAlertsPastes.map((alertPaste) => (
-					<Alert key={alertPaste._id} alertPaste={alertPaste} />
+				{allAlertsPastes.map((alertProps) => (
+					<Alert key={alertProps._id} alertProps={alertProps} />
 				))}
 			</div>
 		</div>
