@@ -1,21 +1,35 @@
-import React, { useContext, useState } from "react";
-import { allPostsContext } from "../../App";
+import React, { useContext, useEffect, useState } from "react";
 import Search from "./Search";
 import Paste from "./Paste";
 import "../../styles/pastes/pasteContainer.scss";
+import axios from "axios";
+import { paste } from "../../interfaces/interfacePaste";
 
 export const PasteContainer: React.FC = () => {
-	const allPastes = useContext(allPostsContext);
+	const [allPastes, setAllPastes] = useState<paste[]>([]);
 	const [searchTerm, setSearchTerm] = useState("");
 
-	//generate all the pastes elements by the search term
+	// generate all the pastes elements by the search term
 	const generatePastes = () => {
-		return allPastes
-			?.filter((paste) =>
-				paste.title.toLowerCase().includes(searchTerm.toLowerCase())
-			)
-			.map((paste) => <Paste key={paste._id} pasteProps={paste} />);
+		return allPastes.map((paste) => (
+			<Paste key={paste._id} pasteProps={paste} />
+		));
 	};
+
+	useEffect(() => {
+		const timeoutId = setTimeout(() => {
+			axios
+				.get("/get_pastes_by_term", {
+					params: {
+						searchTerm: searchTerm,
+					},
+				})
+				.then((res) => setAllPastes(res.data));
+		}, 500);
+		return () => {
+			clearTimeout(timeoutId);
+		};
+	}, [searchTerm]);
 
 	return (
 		<div className="PasteContainer">

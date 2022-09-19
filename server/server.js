@@ -37,11 +37,16 @@ app.get("/bring_new_pastes", async (req, res) => {
 	res.sendStatus(204);
 });
 
+app.get('/get_pastes_by_term',async(req,res)=>{
+	const results = await db.getPasteByName(req.query.searchTerm)
+	res.send(results)
+})
+
 app.listen(PORT, () => console.log(`listen on ${PORT}`));
 
 //todo:
 // style
-// search from server and load 20 every scroll
+// search from server and load 20 every scroll //
 // more information
 // content shown on click
 // information page
