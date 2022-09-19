@@ -1,12 +1,12 @@
 import React, { FormEvent, useContext, useEffect, useState } from "react";
-import { allPostsContext } from "../../App";
+import axios from "axios";
 import Alert from "./Alert";
 import { paste } from "../../interfaces/interfacePaste";
+import InputField from "../inputField/InputField";
 import "../../styles/alerts/alertsContainer.scss";
 import "../../styles/alerts/alertInput.scss";
-
 const AlertsContainer: React.FC = () => {
-	const allPastes = useContext(allPostsContext);
+	// const allPastes = useContext(allPostsContext);
 	const [alertInput, setAlertInput] = useState<string>("");
 	const [allAlertTags, setAllAlertsTags] = useState<Array<string>>(
 		JSON.parse(localStorage.getItem("Scraper-Alerts-Tags")!) || []
@@ -31,8 +31,16 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	//find all the pastes that includes the tag and set state
-	const getPastesFromAlertTags = () => {
+	const getPastesFromAlertTags = async () => {
 		let newAllAlertsPastes = [];
+		const allPastes: paste[] = (
+			await axios.get("/get_paste_by_term", {
+				params: {
+					searchTerm: alertInput,
+				},
+			})
+		).data;
+
 		if (allPastes) {
 			newAllAlertsPastes = allPastes.filter((paste) =>
 				allAlertTags.some(
@@ -51,11 +59,13 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	useEffect(() => {
-		const result = getPastesFromAlertTags();
-		if (result) {
-			setTimeout(() => alert("New Changes in Alerts"), 500);
-		}
-	}, [allAlertTags, allPastes]);
+		(async () => {
+			const result = await getPastesFromAlertTags();
+			if (result) {
+				setTimeout(() => alert("New Changes in Alerts"), 500);
+			}
+		})();
+	}, [allAlertTags]);
 
 	//remove tag by click on it
 	const removeTag = (element: React.MouseEvent<HTMLElement>) => {
@@ -90,12 +100,9 @@ const AlertsContainer: React.FC = () => {
 	return (
 		<div className="AlertsContainer">
 			<form onSubmit={(e) => onFormSubmit(e)}>
-				<input
-					id="alertInput"
-					type="text"
-					placeholder="Create Alert"
-					value={alertInput}
-					onChange={(e) => setAlertInput(e.target.value)}
+				<InputField
+					inputFieldTerm={alertInput}
+					setInputFieldTerm={setAlertInput}
 				/>
 			</form>
 			<div className="allAlertsList">{createAlertTags()}</div>

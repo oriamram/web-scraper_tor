@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import Search from "./Search";
+import React, { useEffect, useState } from "react";
+import InputField from "../inputField/InputField";
 import Paste from "./Paste";
 import "../../styles/pastes/pasteContainer.scss";
 import axios from "axios";
@@ -16,6 +16,7 @@ export const PasteContainer: React.FC = () => {
 		));
 	};
 
+	//wait 500ms and execute request to the server for all pastes that suit the searchTerm
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			axios
@@ -33,9 +34,9 @@ export const PasteContainer: React.FC = () => {
 
 	return (
 		<div className="PasteContainer">
-			<Search
-				setSearchTerm={(val) => setSearchTerm(val)}
-				searchTerm={searchTerm}
+			<InputField
+				setInputFieldTerm={(val) => setSearchTerm(val)}
+				inputFieldTerm={searchTerm}
 			/>
 			{generatePastes()}
 		</div>

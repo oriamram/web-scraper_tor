@@ -42,6 +42,11 @@ app.get('/get_pastes_by_term',async(req,res)=>{
 	res.send(results)
 })
 
+app.get('/get_paste_by_term',async (req,res)=>{
+	const results = await db.getPasteByTerm(req.query.searchTerm)
+	res.send(results)
+})
+
 app.listen(PORT, () => console.log(`listen on ${PORT}`));
 
 //todo:

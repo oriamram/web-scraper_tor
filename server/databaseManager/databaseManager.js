@@ -12,6 +12,10 @@ class databaseManager {
 		return await pastes.find({ title: { $regex: searchTerm, $options: "i" } });
 	}
 
+	async getPasteByTerm(Term){
+		return await pastes.find({ or:[{title: { $regex: Term, $options: "i" }},{content: { $regex: Term, $options: "i" }},{tag: { $regex: Term, $options: "i" }}] });
+	}
+
 	async getAllTagsCount() {
 		return await pastes.aggregate([
 			{ $project: { tags: 1 } },

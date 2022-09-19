@@ -19,6 +19,20 @@ input {
     border: none;
     outline: none;
 }
+
+.InputField {
+    @include size(100%, 10%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .inputField {
+        @include size(80%, 50%);
+        font-size: 1.5rem;
+        border: none;
+        outline: none;
+    }
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 12px;

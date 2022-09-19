@@ -1,10 +1,8 @@
 @import "../main.scss";
 form {
-    @include size(100%, 7%);
+    padding-top: 2vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    #alertInput {
-        @include size(90%, 40%);
-    }
+    margin-bottom: 1vh;
 }
