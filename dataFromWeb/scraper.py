@@ -25,6 +25,7 @@ else:
         tor_string = f.read()
     soup = BeautifulSoup(tor_string, "html.parser")
 
+# scraper returns array of pastes
 def getPastesData():
     pastesArr=[]
     for pasteElement in soup.select('tr.odd,tr.even'):
@@ -68,6 +69,7 @@ def analyzeSentiment(str):
     blob = TextBlob(str)
     return blob.polarity
 
+# check if paste should use a tag
 def checkForTag(title,content):
     tags = set()
     for tag in tagsData:

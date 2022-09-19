@@ -25,6 +25,7 @@ const AlertsContainer: React.FC = () => {
 				"Scraper-Alerts-Tags",
 				JSON.stringify(newAllAlertsTags)
 			);
+			alert("Tag Created Successfully");
 		} else {
 			alert("Not a valid insert");
 		}
@@ -48,6 +49,7 @@ const AlertsContainer: React.FC = () => {
 
 	useEffect(() => {
 		getPastesFromAlertTags();
+		alert("New Content");
 	}, [allAlertTags, allPastes]);
 
 	//remove tag by click on it
@@ -61,6 +63,7 @@ const AlertsContainer: React.FC = () => {
 					"Scraper-Alerts-Tags",
 					JSON.stringify(newAllAlertTags)
 				);
+				alert("Tag Removed Seccessfully");
 				break;
 			}
 		}

@@ -38,3 +38,11 @@ app.get("/bring_new_pastes", async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`listen on ${PORT}`));
+
+//todo:
+// style
+// search from server and load 20 every scroll
+// more information
+// content shown on click
+// information page
+// alerts
