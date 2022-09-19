@@ -25,7 +25,6 @@ const AlertsContainer: React.FC = () => {
 				"Scraper-Alerts-Tags",
 				JSON.stringify(newAllAlertsTags)
 			);
-			alert("Tag Created Successfully");
 		} else {
 			alert("Not a valid insert");
 		}
@@ -33,9 +32,9 @@ const AlertsContainer: React.FC = () => {
 
 	//find all the pastes that includes the tag and set state
 	const getPastesFromAlertTags = () => {
-		let allAlertsPastes = [];
+		let newAllAlertsPastes = [];
 		if (allPastes) {
-			allAlertsPastes = allPastes.filter((paste) =>
+			newAllAlertsPastes = allPastes.filter((paste) =>
 				allAlertTags.some(
 					(alert) =>
 						paste.content.toLowerCase().includes(alert) ||
@@ -43,13 +42,19 @@ const AlertsContainer: React.FC = () => {
 						paste.tags.includes(alert)
 				)
 			);
-			setAllAlertsPastes(allAlertsPastes);
+			if (newAllAlertsPastes.length != allAlertsPastes.length) {
+				setAllAlertsPastes(newAllAlertsPastes);
+				return true;
+			}
 		}
+		return false;
 	};
 
 	useEffect(() => {
-		getPastesFromAlertTags();
-		alert("New Content");
+		const result = getPastesFromAlertTags();
+		if (result) {
+			setTimeout(() => alert("New Changes in Alerts"), 500);
+		}
 	}, [allAlertTags, allPastes]);
 
 	//remove tag by click on it
@@ -63,7 +68,6 @@ const AlertsContainer: React.FC = () => {
 					"Scraper-Alerts-Tags",
 					JSON.stringify(newAllAlertTags)
 				);
-				alert("Tag Removed Seccessfully");
 				break;
 			}
 		}

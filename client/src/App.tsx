@@ -27,6 +27,7 @@ const App: React.FC = () => {
 				setAllPastes(pastes);
 				setConnected(true);
 			});
+
 			const createData = async () => {
 				const tags = (await axios.get("/get_tags")).data;
 				setQuantityChartData({
