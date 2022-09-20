@@ -86,10 +86,7 @@ const AlertsContainer: React.FC = () => {
 	useEffect(() => {
 		if (alertInput.length === 0) {
 			(async () => {
-				const result = await getPastesFromAlertTags();
-				if (result) {
-					setTimeout(() => alert("New Changes in Alerts"), 500);
-				}
+				await getPastesFromAlertTags();
 			})();
 		}
 	});
