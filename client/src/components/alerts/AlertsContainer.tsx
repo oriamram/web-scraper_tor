@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Alert from "./Alert";
 import { paste } from "../../interfaces/interfacePaste";
@@ -6,12 +6,37 @@ import InputField from "../inputField/InputField";
 import "../../styles/alerts/alertsContainer.scss";
 import "../../styles/alerts/alertInput.scss";
 const AlertsContainer: React.FC = () => {
-	// const allPastes = useContext(allPostsContext);
 	const [alertInput, setAlertInput] = useState<string>("");
+	const [allAlertsPastes, setAllAlertsPastes] = useState<Array<paste>>([]);
 	const [allAlertTags, setAllAlertsTags] = useState<Array<string>>(
 		JSON.parse(localStorage.getItem("Scraper-Alerts-Tags")!) || []
 	);
-	const [allAlertsPastes, setAllAlertsPastes] = useState<Array<paste>>([]);
+	const containerRef = useRef(null);
+	let container: HTMLDivElement;
+	if (containerRef.current) {
+		container = containerRef.current;
+	}
+	const onScroll = async () => {
+		if (
+			container.scrollTop ===
+			container.scrollHeight - container.offsetHeight
+		) {
+			await axios
+				.get("/get_pastes_by_term", {
+					params: {
+						searchTerm: alertInput,
+						currentPastesLength: allAlertsPastes.length,
+					},
+				})
+				.then((res) => {
+					if (res.data.length > 0)
+						setAllAlertsPastes([...allAlertsPastes].concat(res.data));
+					else {
+						console.log("no more pastes to load");
+					}
+				});
+		}
+	};
 
 	//search for term and set localstorage
 	const onFormSubmit = (e: FormEvent) => {
@@ -34,9 +59,10 @@ const AlertsContainer: React.FC = () => {
 	const getPastesFromAlertTags = async () => {
 		let newAllAlertsPastes = [];
 		const allPastes: paste[] = (
-			await axios.get("/get_paste_by_term", {
+			await axios.get("/get_pastes_by_term", {
 				params: {
 					searchTerm: alertInput,
+					currentPastesLength: allAlertsPastes.length,
 				},
 			})
 		).data;
@@ -57,15 +83,16 @@ const AlertsContainer: React.FC = () => {
 		}
 		return false;
 	};
-
 	useEffect(() => {
-		(async () => {
-			const result = await getPastesFromAlertTags();
-			if (result) {
-				setTimeout(() => alert("New Changes in Alerts"), 500);
-			}
-		})();
-	}, [allAlertTags]);
+		if (alertInput.length === 0) {
+			(async () => {
+				const result = await getPastesFromAlertTags();
+				if (result) {
+					setTimeout(() => alert("New Changes in Alerts"), 500);
+				}
+			})();
+		}
+	});
 
 	//remove tag by click on it
 	const removeTag = (element: React.MouseEvent<HTMLElement>) => {
@@ -98,7 +125,7 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	return (
-		<div className="AlertsContainer">
+		<div ref={containerRef} className="AlertsContainer" onScroll={onScroll}>
 			<form onSubmit={(e) => onFormSubmit(e)}>
 				<InputField
 					inputFieldTerm={alertInput}

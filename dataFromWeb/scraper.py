@@ -16,10 +16,11 @@ session.proxies["https"] = "socks5h://localhost:9050"
 
 url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
 
-isOnline = False
+isOnline = True
 if isOnline:
     response = session.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
+
 else:
     with open('../tor.html', 'r') as f:
         tor_string = f.read()

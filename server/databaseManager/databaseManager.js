@@ -8,12 +8,12 @@ class databaseManager {
 	}
 
 	//return only what search term is inside of
-	async getPasteByName(searchTerm) {
-		return await pastes.find({ title: { $regex: searchTerm, $options: "i" } });
+	async getPastesByName(searchTerm,currentPastesLength) {
+		return await pastes.find({ title: { $regex: searchTerm, $options: "i" } }).skip(currentPastesLength).limit(20);
 	}
 
-	async getPasteByTerm(Term){
-		return await pastes.find({ or:[{title: { $regex: Term, $options: "i" }},{content: { $regex: Term, $options: "i" }},{tag: { $regex: Term, $options: "i" }}] });
+	async getPasteByTerm(Term,currentPastesLength){
+		return await pastes.find({ or:[{title: { $regex: Term, $options: "i" }},{content: { $regex: Term, $options: "i" }},{tag: { $regex: Term, $options: "i" }}] }).skip(currentPastesLength).limit(20);
 	}
 
 	async getAllTagsCount() {

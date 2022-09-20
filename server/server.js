@@ -18,7 +18,7 @@ app.use(json());
 
 io.on("connection", async (socket) => {
 	console.log(socket.id, "is now connected");
-	io.emit("newPastesToLoad", await db.getAllPastes());
+	io.emit("connected");
 	socket.on("disconnect", () => {
 		console.log(socket.id, "disconnected");
 	});
@@ -33,17 +33,18 @@ app.get("/get_tags", async (req, res) => {
 });
 
 app.get("/bring_new_pastes", async (req, res) => {
-	io.emit("newPastesToLoad", await db.getAllPastes());
+	console.log('aaa');
+	io.emit("newPastesToLoad");
 	res.sendStatus(204);
 });
 
-app.get('/get_pastes_by_term',async(req,res)=>{
-	const results = await db.getPasteByName(req.query.searchTerm)
+app.get('/get_pastes_by_name',async(req,res)=>{
+	const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
 	res.send(results)
 })
 
-app.get('/get_paste_by_term',async (req,res)=>{
-	const results = await db.getPasteByTerm(req.query.searchTerm)
+app.get('/get_pastes_by_term',async (req,res)=>{
+	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
 	res.send(results)
 })
 

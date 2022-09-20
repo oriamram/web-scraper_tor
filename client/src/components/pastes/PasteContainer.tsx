@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InputField from "../inputField/InputField";
 import Paste from "./Paste";
 import "../../styles/pastes/pasteContainer.scss";
@@ -7,7 +7,34 @@ import { paste } from "../../interfaces/interfacePaste";
 
 export const PasteContainer: React.FC = () => {
 	const [allPastes, setAllPastes] = useState<paste[]>([]);
-	const [searchTerm, setSearchTerm] = useState("");
+	const [searchTerm, setSearchTerm] = useState<string>("");
+	const containerRef = useRef(null);
+	let container: HTMLDivElement;
+	if (containerRef.current) {
+		container = containerRef.current;
+	}
+
+	const onScroll = async () => {
+		if (
+			container.scrollTop ===
+			container.scrollHeight - container.offsetHeight
+		) {
+			await axios
+				.get("/get_pastes_by_name", {
+					params: {
+						searchTerm: searchTerm,
+						currentPastesLength: allPastes.length,
+					},
+				})
+				.then((res) => {
+					if (res.data.length > 0)
+						setAllPastes([...allPastes].concat(res.data));
+					else {
+						console.log("no more pastes to load");
+					}
+				});
+		}
+	};
 
 	// generate all the pastes elements by the search term
 	const generatePastes = () => {
@@ -20,9 +47,10 @@ export const PasteContainer: React.FC = () => {
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
 			axios
-				.get("/get_pastes_by_term", {
+				.get("/get_pastes_by_name", {
 					params: {
 						searchTerm: searchTerm,
+						currentPastesLength: allPastes.length,
 					},
 				})
 				.then((res) => setAllPastes(res.data));
@@ -30,10 +58,10 @@ export const PasteContainer: React.FC = () => {
 		return () => {
 			clearTimeout(timeoutId);
 		};
-	}, [searchTerm]);
+	});
 
 	return (
-		<div className="PasteContainer">
+		<div ref={containerRef} className="PasteContainer" onScroll={onScroll}>
 			<InputField
 				setInputFieldTerm={(val) => setSearchTerm(val)}
 				inputFieldTerm={searchTerm}
