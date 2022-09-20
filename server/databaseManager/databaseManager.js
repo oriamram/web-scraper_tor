@@ -12,8 +12,15 @@ class databaseManager {
 		return await pastes.find({ title: { $regex: searchTerm, $options: "i" } }).skip(currentPastesLength).limit(20);
 	}
 
-	async getPasteByTerm(Term,currentPastesLength){
-		return await pastes.find({ or:[{title: { $regex: Term, $options: "i" }},{content: { $regex: Term, $options: "i" }},{tag: { $regex: Term, $options: "i" }}] }).skip(currentPastesLength).limit(20);
+	async getPasteByTerm(term,currentPastesLength){
+		let regexExp = null
+		if(term){
+			regexExp = term.join('|')
+			const a = await pastes.find({ or:[{title: { $regex: regexExp, $options: "i" }},{content: { $regex: regexExp, $options: "i" }},{tag: { $regex: regexExp, $options: "i" }}] }).skip(currentPastesLength).limit(20);
+			console.log(a,'a');
+			return a
+		}else
+		return []
 	}
 
 	async getAllTagsCount() {

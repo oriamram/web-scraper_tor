@@ -58,7 +58,7 @@ export const PasteContainer: React.FC = () => {
 		return () => {
 			clearTimeout(timeoutId);
 		};
-	});
+	}, [searchTerm]);
 
 	return (
 		<div ref={containerRef} className="PasteContainer" onScroll={onScroll}>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import QuantityData from "./components/charts/QuantityData";
 import PasteContainer from "./components/pastes/PasteContainer";
 import AlertsContainer from "./components/alerts/AlertsContainer";
@@ -13,7 +13,7 @@ const App: React.FC = () => {
 	const [connected, setConnected] = useState<boolean>(false);
 	const [quantityChartData, setQuantityChartData] = useState<chart>();
 	const [reRender, setReRender] = useState({});
-	const socket = io("http://localhost:4545");
+	let socket: Socket;
 
 	const dataCreator = async () => {
 		console.log("ssss");
@@ -42,6 +42,7 @@ const App: React.FC = () => {
 
 	//connecting to the Wss
 	useEffect(() => {
+		socket = io("http://localhost:4545");
 		socket.on("connect", () => {
 			console.log("connected");
 			dataCreator();
@@ -52,14 +53,14 @@ const App: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		socket.on("newPastesToLoad", () => {
-			if (!connected) {
-				console.log("heyhey");
-			} else {
-				setReRender({});
-				dataCreator();
-			}
-		});
+		if (socket) {
+			socket.on("newPastesToLoad", () => {
+				if (connected) {
+					setReRender({});
+					dataCreator();
+				}
+			});
+		}
 	});
 
 	//return components or loader depending on the connection status (to wss)

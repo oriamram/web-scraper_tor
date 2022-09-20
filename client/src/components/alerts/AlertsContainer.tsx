@@ -13,6 +13,7 @@ const AlertsContainer: React.FC = () => {
 	);
 	const containerRef = useRef(null);
 	let container: HTMLDivElement;
+
 	if (containerRef.current) {
 		container = containerRef.current;
 	}
@@ -24,7 +25,7 @@ const AlertsContainer: React.FC = () => {
 			await axios
 				.get("/get_pastes_by_term", {
 					params: {
-						searchTerm: alertInput,
+						searchTerm: allAlertTags,
 						currentPastesLength: allAlertsPastes.length,
 					},
 				})
@@ -57,34 +58,28 @@ const AlertsContainer: React.FC = () => {
 
 	//find all the pastes that includes the tag and set state
 	const getPastesFromAlertTags = async () => {
-		let newAllAlertsPastes = [];
-		const allPastes: paste[] = (
+		const allRelevantPastes: paste[] = (
 			await axios.get("/get_pastes_by_term", {
 				params: {
-					searchTerm: alertInput,
+					searchTerm: allAlertTags,
 					currentPastesLength: allAlertsPastes.length,
 				},
 			})
 		).data;
 
-		if (allPastes) {
-			newAllAlertsPastes = allPastes.filter((paste) =>
-				allAlertTags.some(
-					(alert) =>
-						paste.content.toLowerCase().includes(alert) ||
-						paste.title.toLowerCase().includes(alert) ||
-						paste.tags.includes(alert)
-				)
-			);
-			if (newAllAlertsPastes.length != allAlertsPastes.length) {
-				setAllAlertsPastes(newAllAlertsPastes);
-				return true;
-			}
+		if (
+			allRelevantPastes.length > 0 &&
+			allRelevantPastes.length !== allAlertsPastes.length
+		) {
+			setAllAlertsPastes(allRelevantPastes);
 		}
-		return false;
 	};
+
 	useEffect(() => {
+		console.log("eee");
 		if (alertInput.length === 0) {
+			console.log("reer");
+
 			(async () => {
 				await getPastesFromAlertTags();
 			})();
@@ -120,6 +115,7 @@ const AlertsContainer: React.FC = () => {
 			</div>
 		));
 	};
+	console.log(allAlertsPastes, "aaa");
 
 	return (
 		<div ref={containerRef} className="AlertsContainer" onScroll={onScroll}>
