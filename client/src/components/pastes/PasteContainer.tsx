@@ -17,7 +17,7 @@ export const PasteContainer: React.FC = () => {
 
 	const onScroll = async () => {
 		if (
-			container.scrollTop ===
+			container.scrollTop >=
 			container.scrollHeight - container.offsetHeight
 		) {
 			await axios

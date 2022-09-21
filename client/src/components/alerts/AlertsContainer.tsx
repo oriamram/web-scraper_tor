@@ -18,27 +18,29 @@ const AlertsContainer: React.FC = () => {
 	if (containerRef.current) {
 		container = containerRef.current;
 	}
-	// const onScroll = async () => {
-	// 	if (
-	// 		container.scrollTop ===
-	// 		container.scrollHeight - container.offsetHeight
-	// 	) {
-	// 		await axios
-	// 			.get("/get_pastes_by_term", {
-	// 				params: {
-	// 					searchTerm: allAlertTags,
-	// 					currentPastesLength: allAlertsPastes.length,
-	// 				},
-	// 			})
-	// 			.then((res) => {
-	// 				if (res.data.length > 0)
-	// 					setAllAlertsPastes([...allAlertsPastes].concat(res.data));
-	// 				else {
-	// 					console.log("no more pastes to load");
-	// 				}
-	// 			});
-	// 	}
-	// };
+	const onScroll = async () => {
+		if (
+			container.scrollTop >=
+			container.scrollHeight - container.offsetHeight
+		) {
+			console.log("asd");
+
+			await axios
+				.get("/get_pastes_by_term", {
+					params: {
+						searchTerm: allAlertTags,
+						currentPastesLength: allAlertsPastes.length,
+					},
+				})
+				.then((res) => {
+					if (res.data.length > 0)
+						setAllAlertsPastes([...allAlertsPastes].concat(res.data));
+					else {
+						console.log("no more pastes to load");
+					}
+				});
+		}
+	};
 
 	//search for term and set localstorage
 	const onFormSubmit = (e: FormEvent) => {
@@ -119,7 +121,7 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	return (
-		<div ref={containerRef} className="AlertsContainer">
+		<div ref={containerRef} className="AlertsContainer" onScroll={onScroll}>
 			<form onSubmit={(e) => onFormSubmit(e)}>
 				<InputField
 					inputFieldTerm={alertInput}

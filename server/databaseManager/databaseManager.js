@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const { pastes } = require("./connections");
 
 class databaseManager {
@@ -17,7 +16,7 @@ class databaseManager {
 		let regexExp = null
 		if(term){
 			regexExp = Array.from(term).join('|')
-			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] })
+			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] }).skip(currentPastesLength).limit(20);
 		}else return null
 
 	}
