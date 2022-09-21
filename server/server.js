@@ -38,12 +38,12 @@ app.get("/bring_new_pastes", async (req, res) => {
 });
 
 app.get('/get_pastes_by_name',async(req,res)=>{
-	console.log(req.query);
 	const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
 	res.send(results)
 })
 
 app.get('/get_pastes_by_term',async (req,res)=>{
+	console.log(req.query);
 	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
 	res.send(results)
 })

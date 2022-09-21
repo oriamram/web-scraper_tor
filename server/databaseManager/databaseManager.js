@@ -16,11 +16,10 @@ class databaseManager {
 	async getPasteByTerm(term,currentPastesLength){
 		let regexExp = null
 		if(term){
-			regexExp = term.join('|')
-			const pastesByTerm = await pastes.find({ or:[{title: { $regex: regexExp, $options: "i" }},{content: { $regex: regexExp, $options: "i" }},{tag: { $regex: regexExp, $options: "i" }}] }).skip(currentPastesLength).limit(20);
-			return pastesByTerm
-		}else
-		return []
+			regexExp = Array.from(term).join('|')
+			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] })
+		}else return null
+
 	}
 
 	async getAllTagsCount() {

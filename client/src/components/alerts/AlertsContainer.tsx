@@ -18,27 +18,27 @@ const AlertsContainer: React.FC = () => {
 	if (containerRef.current) {
 		container = containerRef.current;
 	}
-	const onScroll = async () => {
-		if (
-			container.scrollTop ===
-			container.scrollHeight - container.offsetHeight
-		) {
-			await axios
-				.get("/get_pastes_by_term", {
-					params: {
-						searchTerm: allAlertTags,
-						currentPastesLength: allAlertsPastes.length,
-					},
-				})
-				.then((res) => {
-					if (res.data.length > 0)
-						setAllAlertsPastes([...allAlertsPastes].concat(res.data));
-					else {
-						console.log("no more pastes to load");
-					}
-				});
-		}
-	};
+	// const onScroll = async () => {
+	// 	if (
+	// 		container.scrollTop ===
+	// 		container.scrollHeight - container.offsetHeight
+	// 	) {
+	// 		await axios
+	// 			.get("/get_pastes_by_term", {
+	// 				params: {
+	// 					searchTerm: allAlertTags,
+	// 					currentPastesLength: allAlertsPastes.length,
+	// 				},
+	// 			})
+	// 			.then((res) => {
+	// 				if (res.data.length > 0)
+	// 					setAllAlertsPastes([...allAlertsPastes].concat(res.data));
+	// 				else {
+	// 					console.log("no more pastes to load");
+	// 				}
+	// 			});
+	// 	}
+	// };
 
 	//search for term and set localstorage
 	const onFormSubmit = (e: FormEvent) => {
@@ -46,20 +46,12 @@ const AlertsContainer: React.FC = () => {
 		if (alertInput.length > 0 && !allAlertTags.includes(alertInput)) {
 			const newAllAlertsTags = [...allAlertTags];
 			newAllAlertsTags.push(alertInput);
-			console.log(newAllAlertsTags);
-
-			(async () => {
-				await getPastesFromAlertTags(newAllAlertsTags);
-			})();
 			setAlertInput("");
 			setAllAlertsTags(newAllAlertsTags);
 			localStorage.setItem(
 				"Scraper-Alerts-Tags",
 				JSON.stringify(newAllAlertsTags)
 			);
-			(async () => {
-				await getPastesFromAlertTags();
-			})();
 		} else {
 			alert("Not a valid insert");
 		}
@@ -67,30 +59,34 @@ const AlertsContainer: React.FC = () => {
 
 	//find all the pastes that includes the tag and set state
 	const getPastesFromAlertTags = async (tags = allAlertTags) => {
-		const allRelevantPastes: paste[] = (
-			await axios.get("/get_pastes_by_term", {
-				params: {
-					searchTerm: tags,
-					currentPastesLength: allAlertsPastes.length,
-				},
-			})
-		).data;
+		if (tags.length > 0) {
+			const allRelevantPastes: paste[] = (
+				await axios.get("/get_pastes_by_term", {
+					params: {
+						searchTerm: tags,
+						currentPastesLength: allAlertsPastes.length,
+					},
+				})
+			).data;
 
-		if (allRelevantPastes.length !== allAlertsPastes.length) {
-			setAllAlertsPastes(allRelevantPastes);
+			if (allRelevantPastes.length !== allAlertsPastes.length) {
+				setAllAlertsPastes(allRelevantPastes);
+			}
+		} else {
+			setAllAlertsPastes([]);
 		}
 	};
 
 	useEffect(() => {
-		(async () => {
-			await getPastesFromAlertTags();
-		})();
+		getPastesFromAlertTags();
 		socket.on("newPastesToLoad", () => {
-			(async () => {
-				await getPastesFromAlertTags();
-			})();
+			getPastesFromAlertTags();
 		});
 	}, []);
+
+	useEffect(() => {
+		getPastesFromAlertTags();
+	}, [allAlertTags]);
 
 	//remove tag by click on it
 	const removeTag = (element: React.MouseEvent<HTMLElement>) => {
@@ -106,9 +102,6 @@ const AlertsContainer: React.FC = () => {
 				break;
 			}
 		}
-		// (async () => {
-		// 	await getPastesFromAlertTags();
-		// })();
 	};
 
 	//creates a tag
@@ -126,7 +119,7 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	return (
-		<div ref={containerRef} className="AlertsContainer" onScroll={onScroll}>
+		<div ref={containerRef} className="AlertsContainer">
 			<form onSubmit={(e) => onFormSubmit(e)}>
 				<InputField
 					inputFieldTerm={alertInput}
