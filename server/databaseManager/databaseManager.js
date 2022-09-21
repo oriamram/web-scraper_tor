@@ -9,6 +9,7 @@ class databaseManager {
 
 	//return only what search term is inside of
 	async getPastesByName(searchTerm,currentPastesLength) {
+		currentPastesLength = +currentPastesLength < 20 ? 0 : currentPastesLength
 		return await pastes.find({ title: { $regex: searchTerm, $options: "i" } }).skip(currentPastesLength).limit(20);
 	}
 
@@ -16,9 +17,8 @@ class databaseManager {
 		let regexExp = null
 		if(term){
 			regexExp = term.join('|')
-			const a = await pastes.find({ or:[{title: { $regex: regexExp, $options: "i" }},{content: { $regex: regexExp, $options: "i" }},{tag: { $regex: regexExp, $options: "i" }}] }).skip(currentPastesLength).limit(20);
-			console.log(a,'a');
-			return a
+			const pastesByTerm = await pastes.find({ or:[{title: { $regex: regexExp, $options: "i" }},{content: { $regex: regexExp, $options: "i" }},{tag: { $regex: regexExp, $options: "i" }}] }).skip(currentPastesLength).limit(20);
+			return pastesByTerm
 		}else
 		return []
 	}

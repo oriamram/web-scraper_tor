@@ -4,6 +4,7 @@ import Paste from "./Paste";
 import "../../styles/pastes/pasteContainer.scss";
 import axios from "axios";
 import { paste } from "../../interfaces/interfacePaste";
+import { socket } from "../../App";
 
 export const PasteContainer: React.FC = () => {
 	const [allPastes, setAllPastes] = useState<paste[]>([]);
@@ -46,20 +47,38 @@ export const PasteContainer: React.FC = () => {
 	//wait 500ms and execute request to the server for all pastes that suit the searchTerm
 	useEffect(() => {
 		const timeoutId = setTimeout(() => {
-			axios
-				.get("/get_pastes_by_name", {
-					params: {
-						searchTerm: searchTerm,
-						currentPastesLength: allPastes.length,
-					},
-				})
-				.then((res) => setAllPastes(res.data));
+			getPastes();
 		}, 500);
 		return () => {
 			clearTimeout(timeoutId);
 		};
 	}, [searchTerm]);
 
+	useEffect(() => {
+		socket.on("connect", () => {
+			socket.on("newPastesInDb", () => {
+				setTimeout(() => {
+					alert("New Pastes In Db");
+				}, 500);
+				if (allPastes.length === 0) {
+					getPastes();
+				}
+			});
+		});
+	}, []);
+
+	const getPastes = () => {
+		axios
+			.get("/get_pastes_by_name", {
+				params: {
+					searchTerm: searchTerm,
+					currentPastesLength: 0,
+				},
+			})
+			.then((res) => {
+				setAllPastes(res.data);
+			});
+	};
 	return (
 		<div ref={containerRef} className="PasteContainer" onScroll={onScroll}>
 			<InputField

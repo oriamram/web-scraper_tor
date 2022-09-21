@@ -9,14 +9,12 @@ import { chart } from "./interfaces/interfaceChart";
 import "./styles/app.scss";
 import "./styles/loader.scss";
 
+export let socket: Socket;
 const App: React.FC = () => {
 	const [connected, setConnected] = useState<boolean>(false);
 	const [quantityChartData, setQuantityChartData] = useState<chart>();
-	const [reRender, setReRender] = useState({});
-	let socket: Socket;
 
 	const dataCreator = async () => {
-		console.log("ssss");
 		const tags = (await axios.get("/get_tags")).data;
 		setQuantityChartData({
 			labels: tags.map((tagObj: tag) => tagObj["tag"]),
@@ -45,23 +43,19 @@ const App: React.FC = () => {
 		socket = io("http://localhost:4545");
 		socket.on("connect", () => {
 			console.log("connected");
-			dataCreator();
-			socket.on("connected", () => {
-				setConnected(true);
-			});
-		});
-	}, []);
 
-	useEffect(() => {
-		if (socket) {
-			socket.on("newPastesToLoad", () => {
-				if (connected) {
-					setReRender({});
-					dataCreator();
-				}
-			});
-		}
-	});
+			dataCreator();
+		});
+		setConnected(true);
+		// 	});
+		// socket.on("newPastesInDb", () => {
+
+		// if (connected) {
+		// dataCreator();
+		// }
+		// });
+		// });
+	}, []);
 
 	//return components or loader depending on the connection status (to wss)
 	const waitingForConnection = () => {

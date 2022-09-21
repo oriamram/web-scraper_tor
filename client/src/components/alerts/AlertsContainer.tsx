@@ -1,6 +1,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Alert from "./Alert";
+import { socket } from "../../App";
 import { paste } from "../../interfaces/interfacePaste";
 import InputField from "../inputField/InputField";
 import "../../styles/alerts/alertsContainer.scss";
@@ -45,46 +46,51 @@ const AlertsContainer: React.FC = () => {
 		if (alertInput.length > 0 && !allAlertTags.includes(alertInput)) {
 			const newAllAlertsTags = [...allAlertTags];
 			newAllAlertsTags.push(alertInput);
+			console.log(newAllAlertsTags);
+
+			(async () => {
+				await getPastesFromAlertTags(newAllAlertsTags);
+			})();
 			setAlertInput("");
 			setAllAlertsTags(newAllAlertsTags);
 			localStorage.setItem(
 				"Scraper-Alerts-Tags",
 				JSON.stringify(newAllAlertsTags)
 			);
+			(async () => {
+				await getPastesFromAlertTags();
+			})();
 		} else {
 			alert("Not a valid insert");
 		}
 	};
 
 	//find all the pastes that includes the tag and set state
-	const getPastesFromAlertTags = async () => {
+	const getPastesFromAlertTags = async (tags = allAlertTags) => {
 		const allRelevantPastes: paste[] = (
 			await axios.get("/get_pastes_by_term", {
 				params: {
-					searchTerm: allAlertTags,
+					searchTerm: tags,
 					currentPastesLength: allAlertsPastes.length,
 				},
 			})
 		).data;
 
-		if (
-			allRelevantPastes.length > 0 &&
-			allRelevantPastes.length !== allAlertsPastes.length
-		) {
+		if (allRelevantPastes.length !== allAlertsPastes.length) {
 			setAllAlertsPastes(allRelevantPastes);
 		}
 	};
 
 	useEffect(() => {
-		console.log("eee");
-		if (alertInput.length === 0) {
-			console.log("reer");
-
+		(async () => {
+			await getPastesFromAlertTags();
+		})();
+		socket.on("newPastesToLoad", () => {
 			(async () => {
 				await getPastesFromAlertTags();
 			})();
-		}
-	});
+		});
+	}, []);
 
 	//remove tag by click on it
 	const removeTag = (element: React.MouseEvent<HTMLElement>) => {
@@ -100,6 +106,9 @@ const AlertsContainer: React.FC = () => {
 				break;
 			}
 		}
+		// (async () => {
+		// 	await getPastesFromAlertTags();
+		// })();
 	};
 
 	//creates a tag
@@ -115,7 +124,6 @@ const AlertsContainer: React.FC = () => {
 			</div>
 		));
 	};
-	console.log(allAlertsPastes, "aaa");
 
 	return (
 		<div ref={containerRef} className="AlertsContainer" onScroll={onScroll}>

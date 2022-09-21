@@ -33,19 +33,18 @@ app.get("/get_tags", async (req, res) => {
 });
 
 app.get("/bring_new_pastes", async (req, res) => {
-	io.emit("newPastesToLoad");
+	io.emit("newPastesInDb");
 	res.sendStatus(204);
 });
 
 app.get('/get_pastes_by_name',async(req,res)=>{
+	console.log(req.query);
 	const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
 	res.send(results)
 })
 
 app.get('/get_pastes_by_term',async (req,res)=>{
-	console.log(req.query);
 	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
-	console.log(results,'r');
 	res.send(results)
 })
 
