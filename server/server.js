@@ -43,7 +43,6 @@ app.get('/get_pastes_by_name',async(req,res)=>{
 })
 
 app.get('/get_pastes_by_term',async (req,res)=>{
-	console.log(req.query);
 	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
 	res.send(results)
 })
@@ -52,7 +51,6 @@ app.listen(PORT, () => console.log(`listen on ${PORT}`));
 
 //todo:
 // style
-// search from server and load 20 every scroll //
 // more information
 // content shown on click
 // information page

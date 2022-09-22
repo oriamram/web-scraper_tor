@@ -40,21 +40,15 @@ const App: React.FC = () => {
 
 	//connecting to the Wss
 	useEffect(() => {
+		dataCreator();
 		socket = io("http://localhost:4545");
 		socket.on("connect", () => {
 			console.log("connected");
-
-			dataCreator();
+			socket.on("newPastesInDb", () => {
+				dataCreator();
+			});
 		});
 		setConnected(true);
-		// 	});
-		// socket.on("newPastesInDb", () => {
-
-		// if (connected) {
-		// dataCreator();
-		// }
-		// });
-		// });
 	}, []);
 
 	//return components or loader depending on the connection status (to wss)

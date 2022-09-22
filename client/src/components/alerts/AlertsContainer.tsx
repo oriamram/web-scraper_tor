@@ -23,8 +23,6 @@ const AlertsContainer: React.FC = () => {
 			container.scrollTop >=
 			container.scrollHeight - container.offsetHeight
 		) {
-			console.log("asd");
-
 			await axios
 				.get("/get_pastes_by_term", {
 					params: {
@@ -80,9 +78,10 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	useEffect(() => {
-		getPastesFromAlertTags();
-		socket.on("newPastesToLoad", () => {
-			getPastesFromAlertTags();
+		socket.on("connect", () => {
+			socket.on("newPastesInDb", () => {
+				getPastesFromAlertTags();
+			});
 		});
 	}, []);
 

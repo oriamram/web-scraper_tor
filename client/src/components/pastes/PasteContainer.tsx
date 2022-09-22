@@ -59,7 +59,7 @@ export const PasteContainer: React.FC = () => {
 			socket.on("newPastesInDb", () => {
 				setTimeout(() => {
 					alert("New Pastes In Db");
-				}, 500);
+				}, 1000);
 				if (allPastes.length === 0) {
 					getPastes();
 				}
