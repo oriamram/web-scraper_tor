@@ -1,25 +1,51 @@
 @import "../main.scss";
 .Paste {
-    @include size(90%, 20%);
+    @include size(90%, unset);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
     margin-top: 2%;
-    padding: 0;
     background: $darkBlue;
-    h1 {
+    transition: 1s;
+
+    h1{
+        text-align: center;
         margin: 0;
-        margin-top: 7%;
-        font-size: 1.5rem;
+    }
+    p{
+        margin: 0;
     }
     .info {
         display: flex;
-        margin-bottom: 8%;
-        p {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        .infoP {
             display: flex;
             align-items: center;
-            margin: 0;
         }
     }
+    .contentContainer{
+        width: 95%;
+        display: flex;
+        flex-direction: column;
+        justify-content:flex-start;
+        align-items: center;
+        border-top: 1px black dotted;
+        overflow: hidden;
+        transition: 1s;
+        h3{
+            text-align: center;
+            margin: 0;
+            margin-bottom: 1%;
+            font-size: 1.5rem;
+            }
+        p{
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+    }
+        &:hover{
+            cursor: pointer;
+        }
 }

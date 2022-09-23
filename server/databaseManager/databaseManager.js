@@ -14,6 +14,7 @@ class databaseManager {
 
 	async getPasteByTerm(term,currentPastesLength){
 		let regexExp = null
+		currentPastesLength = +currentPastesLength < 20 ? 0 : currentPastesLength
 		if(term){
 			regexExp = Array.from(term).join('|')
 			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] }).skip(currentPastesLength).limit(20);
