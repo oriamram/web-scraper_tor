@@ -52,5 +52,4 @@ app.listen(PORT, () => console.log(`listen on ${PORT}`));
 //todo:
 // style
 // more information
-// content shown on click
 // information page

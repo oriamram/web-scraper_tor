@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import QuantityData from "./components/charts/QuantityData";
 import PasteContainer from "./components/pastes/PasteContainer";
 import AlertsContainer from "./components/alerts/AlertsContainer";
 import { tag } from "./interfaces/interfaceTag";
 import { chart } from "./interfaces/interfaceChart";
 import "./styles/app.scss";
 import "./styles/loader.scss";
+import ChartContainer from "./components/charts/ChartContainer";
 
 export let socket: Socket;
 const App: React.FC = () => {
@@ -44,11 +44,11 @@ const App: React.FC = () => {
 		socket = io("http://localhost:4545");
 		socket.on("connect", () => {
 			console.log("connected");
+			setConnected(true);
 			socket.on("newPastesInDb", () => {
 				dataCreator();
 			});
 		});
-		setConnected(true);
 	}, []);
 
 	//return components or loader depending on the connection status (to wss)
@@ -58,7 +58,7 @@ const App: React.FC = () => {
 				<>
 					<AlertsContainer />
 					<PasteContainer />
-					<QuantityData quantityChartData={quantityChartData} />
+					<ChartContainer quantityChartData={quantityChartData} />
 				</>
 			);
 		} else
