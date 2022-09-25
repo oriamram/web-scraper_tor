@@ -1,16 +1,15 @@
 import React from "react";
-import { chart } from "../../interfaces/interfaceChart";
 import "../../styles/charts/chartContainer.scss";
 import QuantityChart from "./QuantityChart";
+import AlertToPastesChart from "./AlertToPastesChart";
 
-const ChartContainer: React.FC<{
-	quantityChartData: chart | undefined;
-}> = ({ quantityChartData }) => {
-	return (
-		<div className="ChartContainer">
-			<QuantityChart quantityChartData={quantityChartData} />
-		</div>
-	);
-};
+const ChartContainer: React.FC = () => {
+		return (
+			<div className="ChartContainer">
+				<QuantityChart />
+				<AlertToPastesChart />
+			</div>
+		);
+	};
 
 export default ChartContainer;

@@ -3,8 +3,9 @@ export interface chart {
 	datasets: {
 		label: string;
 		data: any;
-		backgroundColor: string[];
-		borderColor: string;
-		borderWidth: number;
+		backgroundColor?: string[];
+		borderColor?: string;
+		borderWidth?: number;
+		color?: string
 	}[];
 }

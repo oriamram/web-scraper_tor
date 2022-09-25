@@ -10,7 +10,6 @@ const io = require("socket.io")(4545, {
 const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
 
-
 const db = new databaseManager();
 
 app.use(cors({ origin: "http://localhost:3000" }));
@@ -18,7 +17,9 @@ app.use(json());
 
 io.on("connection", async (socket) => {
 	console.log(socket.id, "is now connected");
-	io.emit("connected");
+	socket.on('allAlertsTags',(tags)=>{
+		socket.emit('allTagsForChart',tags)
+	})
 	socket.on("disconnect", () => {
 		console.log(socket.id, "disconnected");
 	});
@@ -46,6 +47,19 @@ app.get('/get_pastes_by_term',async (req,res)=>{
 	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
 	res.send(results)
 })
+
+app.get('/get_pastes_count',async (req,res)=>{
+	const results = await db.getPastesCount()
+	res.send(results.toString())
+})
+
+app.get('/get_alerts_count',async (req,res)=>{
+	const results = await db.getAlertsCount(req.query.searchTerm)
+	res.send(results.toString())
+})
+
+
+
 
 app.listen(PORT, () => console.log(`listen on ${PORT}`));
 

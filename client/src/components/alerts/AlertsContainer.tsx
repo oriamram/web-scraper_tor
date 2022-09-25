@@ -6,6 +6,7 @@ import { paste } from "../../interfaces/interfacePaste";
 import InputField from "../inputField/InputField";
 import "../../styles/alerts/alertsContainer.scss";
 import "../../styles/alerts/alertInput.scss";
+
 const AlertsContainer: React.FC = () => {
 	const [alertInput, setAlertInput] = useState<string>("");
 	const [allAlertsPastes, setAllAlertsPastes] = useState<Array<paste>>([]);
@@ -14,10 +15,11 @@ const AlertsContainer: React.FC = () => {
 	);
 	const containerRef = useRef(null);
 	let container: HTMLDivElement;
-
 	if (containerRef.current) {
 		container = containerRef.current;
 	}
+
+	//load more alerts on scroll
 	const onScroll = async () => {
 		if (
 			container.scrollTop >=
@@ -78,15 +80,16 @@ const AlertsContainer: React.FC = () => {
 	};
 
 	useEffect(() => {
-		socket.on("connect", () => {
 			socket.on("newPastesInDb", () => {
+				socket.emit('allAlertsTags',allAlertTags)
 				getPastesFromAlertTags();
 			});
-		});
 	}, []);
 
 	useEffect(() => {
+		socket.emit('allAlertsTags',allAlertTags)
 		getPastesFromAlertTags();
+
 	}, [allAlertTags]);
 
 	//remove tag by click on it
@@ -135,6 +138,7 @@ const AlertsContainer: React.FC = () => {
 			</div>
 		</div>
 	);
+	
 };
 
 export default AlertsContainer;

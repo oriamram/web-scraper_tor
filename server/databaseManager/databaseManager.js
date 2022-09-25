@@ -12,6 +12,7 @@ class databaseManager {
 		return await pastes.find({ title: { $regex: searchTerm, $options: "i" } }).skip(currentPastesLength).limit(20);
 	}
 
+	//return 20 pastes according to term
 	async getPasteByTerm(term,currentPastesLength){
 		let regexExp = null
 		currentPastesLength = +currentPastesLength < 20 ? 0 : currentPastesLength
@@ -41,6 +42,19 @@ class databaseManager {
 			},
 		]);
 	}
+
+	async getPastesCount(){
+		return pastes.find({}).count()
+	}
+
+	async getAlertsCount(term){
+		if(term){
+			const regexExp = Array.from(term).join('|')
+			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] }).count()
+		}
+		else return 0
+	}
+
 }
 
 module.exports = databaseManager;

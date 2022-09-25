@@ -9,7 +9,6 @@ import { socket } from "../../App";
 export const PasteContainer: React.FC = () => {
 	const [allPastes, setAllPastes] = useState<paste[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>("");
-	const [showContent, setShowContent] = useState<boolean>(false);
 	const containerRef = useRef(null);
 	let container: HTMLDivElement;
 	if (containerRef.current) {
@@ -56,16 +55,14 @@ export const PasteContainer: React.FC = () => {
 	}, [searchTerm]);
 
 	useEffect(() => {
-		socket.on("connect", () => {
 			socket.on("newPastesInDb", () => {
 				setTimeout(() => {
 					alert("New Pastes In Db");
-				}, 1000);
+				}, 1200);
 				if (allPastes.length === 0) {
 					getPastes();
 				}
 			});
-		});
 	}, []);
 
 	const getPastes = () => {
