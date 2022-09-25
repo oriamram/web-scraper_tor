@@ -20,10 +20,10 @@ const AlertToPastesChart:React.FC = ()=>{
         })).data
         const allPastesCount = await (await axios.get('/get_pastes_count')).data  
         setAlertToPastesChartData({
-            labels:['All Pastes','All Alerts'],
+            labels:[`All Pastes (${allPastesCount})`,`All Alerts (${allAlertsCount})`],
             datasets:[{
                 label: "Alerts TO Pastes Stats",
-                data:[allPastesCount,allAlertsCount],
+                data:[(allPastesCount-allAlertsCount)*100/allPastesCount,allAlertsCount*100/allPastesCount],
                 backgroundColor:['red','green'],
                 borderColor:'black',
             }]
@@ -34,7 +34,6 @@ const AlertToPastesChart:React.FC = ()=>{
         socket.on('allTagsForChart',(tags)=>{
             dataCreator(tags)
         })
-
     },[])
 
 

@@ -5,10 +5,8 @@
     grid-area: pastes;
     align-self: flex-end;
     justify-self: center;
-    display: flex;
     flex-wrap: wrap;
     overflow: auto;
-    justify-content: center;
     background: $blue;
     border-radius: 3px;
 }

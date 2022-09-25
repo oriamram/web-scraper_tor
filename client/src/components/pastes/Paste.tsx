@@ -50,7 +50,7 @@ const Paste: React.FC<{ pasteProps: paste }> = ({ pasteProps }) => {
 			</div>
 			<div
 				className="contentContainer"
-				style={{ maxHeight: showContent, transition: "1s" }}
+				style={{ maxHeight: showContent, transition: "1s ease-in-out" }}
 			>
 				<h3 style={{ display }}>content:</h3>
 				<p style={{ display }}>{pasteProps.content}</p>
