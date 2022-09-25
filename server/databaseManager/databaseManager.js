@@ -18,7 +18,7 @@ class databaseManager {
 		currentPastesLength = +currentPastesLength < 20 ? 0 : currentPastesLength
 		if(term){
 			regexExp = Array.from(term).join('|')
-			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] }).skip(currentPastesLength).limit(20);
+			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } },{ content: { $regex: regexExp, $options: "i" } },{ tags: { $regex: regexExp, $options: "i" } }] }).skip(currentPastesLength).limit(20);
 		}else return null
 
 	}
@@ -50,7 +50,7 @@ class databaseManager {
 	async getAlertsCount(term){
 		if(term){
 			const regexExp = Array.from(term).join('|')
-			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } }] }).count()
+			return await pastes.find({ $or:[{ title: { $regex: regexExp, $options: "i" } },{ content: { $regex: regexExp, $options: "i" } },{ tags: { $regex: regexExp, $options: "i" } }] }).count()
 		}
 		else return 0
 	}

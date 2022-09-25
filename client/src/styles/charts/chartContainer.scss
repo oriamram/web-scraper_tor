@@ -4,6 +4,7 @@
     grid-area: charts;
     display: flex;
     flex-direction: column;
+    justify-content: start;
     align-items: center;
     padding: 3%;
     background: $blue;

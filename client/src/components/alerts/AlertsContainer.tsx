@@ -70,7 +70,8 @@ const AlertsContainer: React.FC = () => {
 					},
 				})
 			).data;
-
+				console.log(allRelevantPastes);
+				
 			if (allRelevantPastes.length !== allAlertsPastes.length) {
 				setAllAlertsPastes(allRelevantPastes);
 			}

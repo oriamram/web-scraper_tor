@@ -5,12 +5,11 @@ import { chart } from "../../interfaces/interfaceChart";
 import { useState } from "react";
 import axios from "axios";
 import { socket } from "../../App";
+import '../../styles/charts/charts.scss'
 
 
 const AlertToPastesChart:React.FC = ()=>{
 	const [AlertToPastesChartData, setAlertToPastesChartData] = useState<chart>();
-
-
 
     const dataCreator = async (tags:string[]) => {
         const allAlertsCount = (await axios.get('/get_alerts_count',{
@@ -18,7 +17,7 @@ const AlertToPastesChart:React.FC = ()=>{
                 searchTerm:tags
             }
         })).data
-        const allPastesCount = await (await axios.get('/get_pastes_count')).data  
+        const allPastesCount = await (await axios.get('/get_pastes_count')).data
         setAlertToPastesChartData({
             labels:[`All Pastes (${allPastesCount})`,`All Alerts (${allAlertsCount})`],
             datasets:[{
@@ -46,11 +45,10 @@ const AlertToPastesChart:React.FC = ()=>{
                 labels:{
                     color:'black',
                     font:{
-                        size:18
+                        size:17
                     }
                 }
               }
-
             }
         }} />) :
         (

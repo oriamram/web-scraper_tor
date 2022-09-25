@@ -1,5 +1,9 @@
 @import "../main.scss";
 .QuantityData {
     width: 90%;
-    background: $lightBlue;
+    background: rgba(47, 122, 159, 0.339);
+}
+.AlertToPastesChart{
+    margin-top: 5vh;
+    width: 50%;
 }
