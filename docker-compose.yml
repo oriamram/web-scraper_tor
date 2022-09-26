@@ -17,4 +17,18 @@ services:
         ports:
             - 8118:8118
             - 9050:9050
-        
+    my-server:
+        build: ./server
+        ports:
+            - 4000:4000
+            - 4545:4545
+        environment:
+            DB_URL: mongodb://mymongo/intsight-project
+        depends_on:
+            - mymongo
+    my-client:
+        build: ./client
+        ports:
+            - 3000:3000
+        depends_on:
+            - my-server

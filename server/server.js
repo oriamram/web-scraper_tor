@@ -7,9 +7,9 @@ const io = require("socket.io")(4545, {
 		origin: ["http://localhost:3000"],
 	},
 });
+
 const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
-
 const db = new databaseManager();
 
 app.use(cors({ origin: "http://localhost:3000" }));
@@ -65,3 +65,4 @@ app.listen(PORT, () => console.log(`listen on ${PORT}`));
 
 //todo:
 // style
+//docker
