@@ -10,19 +10,18 @@ session = requests.session()
 tagsFile = open('tags.json','r')
 tagsData = json.load(tagsFile)
 
-session.proxies["http"] = "socks5h://localhost:9050"
-session.proxies["https"] = "socks5h://localhost:9050"
+session.proxies["http"] = "socks5h://tor:9050"
+session.proxies["https"] = "socks5h://tor:9050"
 #http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists
-
+print('pspsps')
 url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
 
 isOnline = True
 if isOnline:
     response = session.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
-
 else:
-    with open('../tor.html', 'r') as f:
+    with open('./tor.html', 'r') as f:
         tor_string = f.read()
     soup = BeautifulSoup(tor_string, "html.parser")
 

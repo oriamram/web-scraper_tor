@@ -32,3 +32,9 @@ services:
             - 3000:3000
         depends_on:
             - my-server
+    scraper:
+        build: ./dataFromWeb
+        ports:
+            - 5000:5000
+        depends_on:
+            - mymongo

@@ -3,7 +3,8 @@ from pymongo import MongoClient
 
 class databaseManager:
     def __init__(self):
-        self.cluster = MongoClient('mongodb://127.0.0.1:2717')
+        # self.cluster = MongoClient('mongodb://127.0.0.1:2717')
+        self.cluster = MongoClient('mongodb://mymongo:27017')
         self.db = self.cluster['intsight-project']
         self.collection = self.db['pastes']
 
@@ -19,7 +20,6 @@ class databaseManager:
     # get all the pastes that inside the db
     def getAllPastes(self):
         return self.collection.find({})
-
 
     # check if a content is a copy
     def isaCopy(self,outsidePaste,outsidePastes=False):
