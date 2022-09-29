@@ -5,6 +5,9 @@ Project with Rapid 7.
 
 A dark-web (using tor) scraper that analize the scraped data.
 
+The Application will scan the dark-web once every two minutes and will send the data to the server and the server will use ws to send the data to the user.
+In the application you can search for a specific title of paste or set an alert that will show all the pastes that includes the term.
+
 ## Technologies
 JavaScript | TypeScript | Python | MongoDB | Docker | React | Wss
 
