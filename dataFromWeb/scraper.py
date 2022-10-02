@@ -13,7 +13,6 @@ tagsData = json.load(tagsFile)
 session.proxies["http"] = "socks5h://tor:9050"
 session.proxies["https"] = "socks5h://tor:9050"
 #http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists
-print('pspsps')
 url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
 
 isOnline = True
