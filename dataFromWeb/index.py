@@ -8,7 +8,8 @@ while isRunning:
     print('started scraping')
     try:
         insertStatus = db.insertPastes(getPastesData())
-    except:
+    except Exception as e:
+        print(e)
         insertStatus = 404
     if insertStatus == 204:
         requests.get('http://my-server:4000/api/bring_new_pastes')

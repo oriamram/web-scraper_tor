@@ -13,19 +13,22 @@ tagsData = json.load(tagsFile)
 session.proxies["http"] = "socks5h://tor:9050"
 session.proxies["https"] = "socks5h://tor:9050"
 #http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists
-url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
 
 isOnline = True
-if isOnline:
-    response = session.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-else:
-    with open('./tor.html', 'r') as f:
-        tor_string = f.read()
-    soup = BeautifulSoup(tor_string, "html.parser")
+def connectToTor():
+    url = "http://paste2vljvhmwq5zy33re2hzu4fisgqsohufgbljqomib2brzx3q4mid.onion/lists"
+    if isOnline:
+        response = session.get(url,timeout=20)
+        return BeautifulSoup(response.content, "html.parser")
+    else:
+        with open('./tor.html', 'r') as f:
+            tor_string = f.read()
+        return BeautifulSoup(tor_string, "html.parser")
+
 
 # scraper returns array of pastes
 def getPastesData():
+    soup = connectToTor()
     pastesArr=[]
     for pasteElement in soup.select('tr.odd,tr.even'):
         pasteObj={}
