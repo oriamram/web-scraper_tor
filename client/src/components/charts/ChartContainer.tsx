@@ -1,5 +1,4 @@
-import React, { useState,useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import "../../styles/charts/chartContainer.scss";
 import QuantityChart from "./QuantityChart";
 import AlertToPastesChart from "./AlertToPastesChart";

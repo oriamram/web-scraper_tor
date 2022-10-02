@@ -22,11 +22,12 @@ const AlertsContainer: React.FC = () => {
 	//load more alerts on scroll
 	const onScroll = async () => {
 		if (
-			container.scrollTop >=
+			container.scrollTop+1 >=
 			container.scrollHeight - container.offsetHeight
 		) {
+			
 			await axios
-				.get("/get_pastes_by_term", {
+				.get("/api/get_pastes_by_term", {
 					params: {
 						searchTerm: allAlertTags,
 						currentPastesLength: allAlertsPastes.length,
@@ -63,7 +64,7 @@ const AlertsContainer: React.FC = () => {
 	const getPastesFromAlertTags = async (tags = allAlertTags) => {
 		if (tags.length > 0) {
 			const allRelevantPastes: paste[] = (
-				await axios.get("/get_pastes_by_term", {
+				await axios.get("/api/get_pastes_by_term", {
 					params: {
 						searchTerm: tags,
 						currentPastesLength: allAlertsPastes.length,

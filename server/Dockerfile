@@ -4,7 +4,7 @@ WORKDIR /home/server
 
 COPY . .
 
-RUN npm install
+RUN npm install --only=prod
 
 EXPOSE 4000
 EXPOSE 4545

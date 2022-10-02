@@ -11,7 +11,8 @@ while isRunning:
     except:
         insertStatus = 404
     if insertStatus == 204:
-        requests.get('http://my-server:4000/bring_new_pastes')
+        requests.get('http://my-server:4000/api/bring_new_pastes')
+        # host.docker.internal
         continue
     print(insertStatus)
     print('ended scraping')

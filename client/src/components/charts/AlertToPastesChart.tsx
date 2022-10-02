@@ -12,12 +12,12 @@ const AlertToPastesChart:React.FC = ()=>{
 	const [AlertToPastesChartData, setAlertToPastesChartData] = useState<chart>();
 
     const dataCreator = async (tags:string[]) => {
-        const allAlertsCount = (await axios.get('/get_alerts_count',{
+        const allAlertsCount = (await axios.get('/api/get_alerts_count',{
             params: {
                 searchTerm:tags
             }
         })).data
-        const allPastesCount = await (await axios.get('/get_pastes_count')).data
+        const allPastesCount = await (await axios.get('/api/get_pastes_count')).data
         setAlertToPastesChartData({
             labels:[`All Pastes (${allPastesCount})`,`All Alerts (${allAlertsCount})`],
             datasets:[{

@@ -21,7 +21,7 @@ export const PasteContainer: React.FC = () => {
 			container.scrollHeight - container.offsetHeight
 		) {
 			await axios
-				.get("/get_pastes_by_name", {
+				.get("/api/get_pastes_by_name", {
 					params: {
 						searchTerm: searchTerm,
 						currentPastesLength: allPastes.length,
@@ -67,7 +67,7 @@ export const PasteContainer: React.FC = () => {
 
 	const getPastes = () => {
 		axios
-			.get("/get_pastes_by_name", {
+			.get("/api/get_pastes_by_name", {
 				params: {
 					searchTerm: searchTerm,
 					currentPastesLength: 0,

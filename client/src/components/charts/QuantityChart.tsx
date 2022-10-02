@@ -11,7 +11,7 @@ const QuantityChart:React.FC = () => {
 	const [quantityChartData, setQuantityChartData] = useState<chart>();
 
 	const dataCreator = async () => {
-		const tags = (await axios.get("/get_tags")).data;
+		const tags = (await axios.get("/api/get_tags")).data;
 		setQuantityChartData({
 			labels: tags.map((tagObj: tag) => tagObj["tag"]),
 			datasets: [
