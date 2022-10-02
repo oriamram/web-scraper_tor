@@ -15,6 +15,8 @@ const db = new databaseManager();
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(json());
 
+
+
 io.on("connection", async (socket) => {
 	console.log(socket.id, "is now connected");
 	socket.on('allAlertsTags',(tags)=>{
