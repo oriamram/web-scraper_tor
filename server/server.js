@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const io = require("socket.io")(4545, {
 	cors: {
-		origin: ["http://localhost:3000"],
+		origin: ["http://my-client:80"],
 	},
 });
 
@@ -12,7 +12,7 @@ const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
 const db = new databaseManager();
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "http://my-client:80" }));
 app.use(json());
 
 

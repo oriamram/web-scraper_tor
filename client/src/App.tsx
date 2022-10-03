@@ -12,7 +12,7 @@ const App: React.FC = () => {
 
 	//connecting to the Wss
 	useEffect(() => {
-		socket = io("http://localhost:4545");
+		socket = io("http://my-server:4545");
 		socket.on("connect", () => {
 			console.log("connected");
 			setConnected(true);
