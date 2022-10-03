@@ -5,14 +5,13 @@ import AlertsContainer from "./components/alerts/AlertsContainer";
 import "./styles/app.scss";
 import "./styles/loader.scss";
 import ChartContainer from "./components/charts/ChartContainer";
-
 export let socket: Socket;
 const App: React.FC = () => {
 	const [connected, setConnected] = useState<boolean>(false);
 
-	//connecting to the Wss
 	useEffect(() => {
-		socket = io("http://my-server:4545");
+		socket = io("http://localhost:4545");
+		
 		socket.on("connect", () => {
 			console.log("connected");
 			setConnected(true);
@@ -21,6 +20,7 @@ const App: React.FC = () => {
 
 	//return components or loader depending on the connection status (to wss)
 	const waitingForConnection = () => {
+		
 		if (connected) {
 			return (
 				<>
@@ -30,15 +30,15 @@ const App: React.FC = () => {
 				</>
 			);
 		} else
-			return (
-				<div className="lds-ring">
+		return (
+			<div className="lds-ring">
 					<div></div>
 					<div></div>
 					<div></div>
 					<div></div>
 				</div>
 			);
-	};
+		};
 
 	return <div className="App">{waitingForConnection()}</div>;
 };

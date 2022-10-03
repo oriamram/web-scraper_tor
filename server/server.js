@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const io = require("socket.io")(4545, {
 	cors: {
-		origin: ["http://my-client:80"],
+		origin: ["http://localhost:3000"],
 	},
 });
 
@@ -12,12 +12,15 @@ const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
 const db = new databaseManager();
 
-app.use(cors({ origin: "http://my-client:80" }));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(json());
 
 
 
 io.on("connection", async (socket) => {
+	// socket.on("connect_error", (err) => {
+	// 	console.log(`connect_error due to ${err.message}`);
+	// });
 	console.log(socket.id, "is now connected");
 	socket.on('allAlertsTags',(tags)=>{
 		socket.emit('allTagsForChart',tags)
