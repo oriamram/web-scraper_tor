@@ -52,7 +52,11 @@ input {
 }
 
 @media only screen and (max-width: 1100px){
-    body{
+
+    .Paste{
+        h1{
+            font-size: 1.5rem
+        }
     }
 
     .AlertsContainer{
@@ -73,7 +77,6 @@ input {
 
     .PasteContainer{
         @include size(100vw,100vh);
-        // z-index: 0;
     }
 
     .charts{

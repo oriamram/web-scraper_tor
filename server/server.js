@@ -8,9 +8,9 @@ const io = require("socket.io")(4545, {
 	},
 });
 
-// const databaseManager = require("./databaseManager/databaseManager");
+const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
-// const db = new databaseManager();
+const db = new databaseManager();
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(json());
@@ -30,10 +30,10 @@ io.on("connection", async (socket) => {
 app.get("/api/", async (req, res) => {
 	res.sendStatus(200);
 });
+
 //check in aws for single server request and with or without docker
 app.get("/api/get_tags", async (req, res) => {
-	// res.send(await db.getAllTagsCount());
-	res.send([]);
+	res.send(await db.getAllTagsCount());
 
 });
 
@@ -43,29 +43,22 @@ app.get("/api/bring_new_pastes", async (req, res) => {
 });
 
 app.get('/api/get_pastes_by_name',async(req,res)=>{
-	// const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
-	const results = [];
+	const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
 	res.send(results)
 })
 
 app.get('/api/get_pastes_by_term',async (req,res)=>{
-	// const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
-	const results = [];
-
+	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
 	res.send(results)
 })
 
 app.get('/api/get_pastes_count',async (req,res)=>{
-	// const results = await db.getPastesCount()
-	const results = [];
-
+	const results = await db.getPastesCount()
 	res.send(results.toString())
 })
 
 app.get('/api/get_alerts_count',async (req,res)=>{
-	// const results = await db.getAlertsCount(req.query.searchTerm)
-	const results = [];
-
+	const results = await db.getAlertsCount(req.query.searchTerm)
 	res.send(results.toString())
 })
 
