@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import PasteContainer from "./components/pastes/PasteContainer";
 import AlertsContainer from "./components/alerts/AlertsContainer";
@@ -8,10 +8,8 @@ import ChartContainer from "./components/charts/ChartContainer";
 export let socket: Socket;
 const App: React.FC = () => {
 	const [connected, setConnected] = useState<boolean>(false);
-
 	useEffect(() => {
 		socket = io("http://localhost:4545");
-		
 		socket.on("connect", () => {
 			console.log("connected");
 			setConnected(true);
@@ -20,13 +18,14 @@ const App: React.FC = () => {
 
 	//return components or loader depending on the connection status (to wss)
 	const waitingForConnection = () => {
-		
 		if (connected) {
 			return (
 				<>
-					<AlertsContainer />
-					<PasteContainer />
-					<ChartContainer  />
+					<AlertsContainer /> 
+				 	<PasteContainer /> 
+					<ChartContainer />
+					<div className="charts" onClick={()=> document.getElementsByClassName('ChartContainer')[0]?.classList.toggle('active')}>charts</div>
+					<div className="alerts" onClick={()=> document.getElementsByClassName('AlertsContainer')[0]?.classList.toggle('active')}>alerts</div>
 				</>
 			);
 		} else

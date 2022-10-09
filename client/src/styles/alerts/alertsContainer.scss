@@ -1,8 +1,8 @@
 @import "../main.scss";
 .AlertsContainer {
-    @include size(100%, 90%);
+    // @include size(100%, 90%);
     background: $blue;
-    margin-top: 2vh;
+    // margin-top: 2vh;
     grid-area: alerts;
     display: flex;
     flex-wrap: wrap;

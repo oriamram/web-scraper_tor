@@ -8,9 +8,9 @@ const io = require("socket.io")(4545, {
 	},
 });
 
-const databaseManager = require("./databaseManager/databaseManager");
+// const databaseManager = require("./databaseManager/databaseManager");
 const PORT = process.env.PORT || 4000;
-const db = new databaseManager();
+// const db = new databaseManager();
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(json());
@@ -18,9 +18,6 @@ app.use(json());
 
 
 io.on("connection", async (socket) => {
-	// socket.on("connect_error", (err) => {
-	// 	console.log(`connect_error due to ${err.message}`);
-	// });
 	console.log(socket.id, "is now connected");
 	socket.on('allAlertsTags',(tags)=>{
 		socket.emit('allTagsForChart',tags)
@@ -33,9 +30,11 @@ io.on("connection", async (socket) => {
 app.get("/api/", async (req, res) => {
 	res.sendStatus(200);
 });
-
+//check in aws for single server request and with or without docker
 app.get("/api/get_tags", async (req, res) => {
-	res.send(await db.getAllTagsCount());
+	// res.send(await db.getAllTagsCount());
+	res.send([]);
+
 });
 
 app.get("/api/bring_new_pastes", async (req, res) => {
@@ -44,22 +43,29 @@ app.get("/api/bring_new_pastes", async (req, res) => {
 });
 
 app.get('/api/get_pastes_by_name',async(req,res)=>{
-	const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
+	// const results = await db.getPastesByName(req.query.searchTerm,req.query.currentPastesLength)
+	const results = [];
 	res.send(results)
 })
 
 app.get('/api/get_pastes_by_term',async (req,res)=>{
-	const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
+	// const results = await db.getPasteByTerm(req.query.searchTerm, req.query.currentPastesLength)
+	const results = [];
+
 	res.send(results)
 })
 
 app.get('/api/get_pastes_count',async (req,res)=>{
-	const results = await db.getPastesCount()
+	// const results = await db.getPastesCount()
+	const results = [];
+
 	res.send(results.toString())
 })
 
 app.get('/api/get_alerts_count',async (req,res)=>{
-	const results = await db.getAlertsCount(req.query.searchTerm)
+	// const results = await db.getAlertsCount(req.query.searchTerm)
+	const results = [];
+
 	res.send(results.toString())
 })
 
