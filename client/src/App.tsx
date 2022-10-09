@@ -24,8 +24,16 @@ const App: React.FC = () => {
 					<AlertsContainer /> 
 				 	<PasteContainer /> 
 					<ChartContainer />
-					<div className="charts" onClick={()=> document.getElementsByClassName('ChartContainer')[0]?.classList.toggle('active')}>charts</div>
-					<div className="alerts" onClick={()=> document.getElementsByClassName('AlertsContainer')[0]?.classList.toggle('active')}>alerts</div>
+					<div className="charts" onClick={()=> {
+						document.getElementsByClassName('ChartContainer')[0]?.classList.toggle('active')
+						document.getElementsByClassName('AlertsContainer')[0]?.classList.remove('active')
+
+				}}>charts</div>
+					<div className="alerts" onClick={()=> {
+						document.getElementsByClassName('AlertsContainer')[0]?.classList.toggle('active')
+						document.getElementsByClassName('ChartContainer')[0]?.classList.remove('active')
+
+						}}>alerts</div>
 				</>
 			);
 		} else

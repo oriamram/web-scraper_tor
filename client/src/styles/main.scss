@@ -87,7 +87,7 @@ input {
     }
 
     .ChartContainer.active{
-        transform: translateX(-100vw)
+        transform: translateX(-100vw);
     }
 
     .alerts{
@@ -101,6 +101,6 @@ input {
     }
 
     .AlertsContainer.active{
-        transform: translateX(100vw)
+        transform: translateX(100vw);
     }
 }
