@@ -9,4 +9,4 @@ RUN npm install --only=prod
 EXPOSE 4000
 EXPOSE 4545
 
-CMD ["npm", "start"]
+CMD ["npm","run","dev"]

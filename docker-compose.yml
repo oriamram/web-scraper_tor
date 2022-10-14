@@ -23,13 +23,20 @@ services:
             - 4000:4000
             - 4545:4545
         environment:
-            DB_URL: mongodb://mymongo/intsight-project
+            - DB_URL=mongodb://mymongo/intsight-project
+            - CHOKIDAR_USEPOLLING=true
+        volumes:
+            - ./server:/home/server
         depends_on:
             - mymongo
     my-client:
         build: ./client
         ports:
             - 3000:80
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+        volumes:
+            - ./client:/home/client
         depends_on:
             - my-server
     scraper:
