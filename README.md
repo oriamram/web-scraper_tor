@@ -47,7 +47,7 @@ You also need to make sure that you have mongo installed on your machine and tor
 ## Screenshots
 ![image](https://user-images.githubusercontent.com/97836572/194826687-cc9d8590-39bb-44d8-b58d-09924773e8ab.png)
 ![image](https://user-images.githubusercontent.com/97836572/194826764-bd193e23-9c17-4981-aad5-5eea7ec69c5e.png)
-![image](https://user-images.githubusercontent.com/97836572/194826995-003f7cb5-cf54-4b25-9e87-636a76c0ef5c.png)
+![image](https://user-images.githubusercontent.com/97836572/194827970-33702d09-6303-40eb-affc-8f45e5cef315.png)
 ![image](https://user-images.githubusercontent.com/97836572/194827275-35a335e2-d92a-4941-853b-94e6f10ff9d7.png)
 
 
